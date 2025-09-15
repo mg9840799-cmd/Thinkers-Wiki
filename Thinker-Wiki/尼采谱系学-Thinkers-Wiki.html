@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尼采谱系学-Thinker-Wiki</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // 对应原动态图派系颜色，保持视觉一致性
+                        nietzsche: '#e41a1c',    // 尼采及核心继承者-红
+                        pioneer: '#377eb8',      // 先驱与同路人-蓝
+                        christian: '#4daf4a',    // 基督教谱系-绿
+                        rationalist: '#984ea3',  // 理性主义谱系-紫
+                        russian: '#ff7f00',      // 俄国文学谱系-橙
+                        sympathy: '#a65628',     // 同情与现实的捍卫者-棕
+                        psychology: '#1E90FF',   // 深度心理学谱系-天蓝色
+                        linguistics: '#9370DB',  // 语言学谱系-中紫色
+                        existential: '#4B0082'   // 存在主义谱系-靛蓝
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 思想家卡片样式 -->
+    <style>
+        .thinker-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+        
+        .thinker-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* 确保思想家卡片在网格布局中正确显示 */
+        .grid {
+            display: grid;
+        }
+        
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+        
+        @screen md {
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        
+        .gap-4 {
+            gap: 1rem;
+        }
+        
+        /* 导航项样式 */
+        .nav-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-item.active {
+            background-color: rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- 顶部导航栏 -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3">
+            <h1 class="text-xl md:text-2xl font-bold text-center">尼采谱系学-Thinkers Wiki</h1>
+            <p class="text-sm text-gray-500 text-center mt-1">————以尼采思想为核心，梳理思想家们的派系与传承</p>
+        </div>
+    </header>
+
+    <!-- 移动端派系导航（下拉选择） -->
+    <div class="lg:hidden bg-white border-b border-gray-200 sticky top-16 z-40">
+        <div class="container mx-auto px-4 py-2">
+            <select id="mobile-faction-select" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                <option value="all">全部派系</option>
+                <option value="nietzsche">尼采及核心继承者</option>
+                <option value="existential">存在主义谱系</option>
+                <option value="pioneer">先驱与同路人</option>
+                <option value="christian">基督教谱系</option>
+                <option value="rationalist">理性主义谱系</option>
+                <option value="linguistics">语言学谱系</option>
+                <option value="psychology">深度心理学谱系</option>
+                <option value="russian">俄国文学谱系</option>
+                <option value="sympathy">同情与现实的捍卫者</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 快速定位指示器（桌面端） -->
+    <div class="scroll-indicator" id="scrollIndicator">
+            <div class="scroll-indicator-item active" data-target="nietzsche" style="background-color: #e41a1c;"></div>
+            <div class="scroll-indicator-item" data-target="existential" style="background-color: #4B0082;"></div>
+            <div class="scroll-indicator-item" data-target="pioneer" style="background-color: #377eb8;"></div>
+            <div class="scroll-indicator-item" data-target="christian" style="background-color: #4daf4a;"></div>
+            <div class="scroll-indicator-item" data-target="rationalist" style="background-color: #984ea3;"></div>
+            <div class="scroll-indicator-item" data-target="linguistics" style="background-color: #9370DB;"></div>
+            <div class="scroll-indicator-item" data-target="psychology" style="background-color: #1E90FF;"></div>
+            <div class="scroll-indicator-item" data-target="russian" style="background-color: #ff7f00;"></div>
+            <div class="scroll-indicator-item" data-target="sympathy" style="background-color: #a65628;"></div>
+        </div>
+
+    <!-- 主体内容：左侧桌面端导航 + 右侧思想家列表 -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- 桌面端派系导航（固定侧边） -->
+            <aside class="lg:w-1/5 hidden lg:block sticky top-24 self-start h-fit">
+                <nav class="bg-white rounded-lg shadow-md p-4">
+                    <h2 class="text-lg font-bold mb-4 border-b border-gray-200 pb-2">思想派系导航</h2>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#all" class="nav-item active" data-faction="all">
+                                <i class="fa fa-th-large mr-2"></i>全部派系
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#nietzsche" class="nav-item" data-faction="nietzsche" style="border-color: #e41a1c; color: #e41a1c;">
+                                <i class="fa fa-star mr-2"></i>尼采及核心继承者
+                            </a>
+                        </li>
+                         <li>
+                            <a href="#existential" class="nav-item" data-faction="existential" style="border-color: #4B0082; color: #4B0082;">
+                                <i class="fa fa-user mr-2"></i>存在主义谱系
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#pioneer" class="nav-item" data-faction="pioneer" style="border-color: #377eb8; color: #377eb8;">
+                                <i class="fa fa-compass mr-2"></i>先驱与同路人
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#christian" class="nav-item" data-faction="christian" style="border-color: #4daf4a; color: #4daf4a;">
+                                <i class="fa fa-book mr-2"></i>基督教谱系
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#rationalist" class="nav-item" data-faction="rationalist" style="border-color: #984ea3; color: #984ea3;">
+                                <i class="fa fa-lightbulb-o mr-2"></i>理性主义谱系
+                            </a>
+                        </li>
+                        <!-- 新增：语言学谱系 -->
+                        <li>
+                            <a href="#linguistics" class="nav-item" data-faction="linguistics" style="border-color: #9370DB; color: #9370DB;">
+                                <i class="fa fa-language mr-2"></i>语言学谱系
+                            </a>
+                        </li>
+                        <!-- 新增：深度心理学谱系 -->
+                        <li>
+                            <a href="#psychology" class="nav-item" data-faction="psychology" style="border-color: #1E90FF; color: #1E90FF;">
+                                <i class="fa fa-heartbeat mr-2"></i>深度心理学谱系
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#russian" class="nav-item" data-faction="russian" style="border-color: #ff7f00; color: #ff7f00;">
+                                <i class="fa fa-book mr-2"></i>俄国文学谱系
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#sympathy" class="nav-item" data-faction="sympathy" style="border-color: #a65628; color: #a65628;">
+                                <i class="fa fa-heart mr-2"></i>同情与现实的捍卫者
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- 核心思想对比卡片（桌面端专属） -->
+                    <div class="mt-8 bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <h3 class="font-bold text-sm text-gray-700 mb-3">尼采核心批判靶心</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <span class="inline-block w-2 h-2 rounded-full bg-nietzsche mt-2 mr-2"></span>
+                                <span>反对基督教-柏拉图主义：否定"天国/理念界"的虚构</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="inline-block w-2 h-2 rounded-full bg-nietzsche mt-2 mr-2"></span>
+                                <span>反对理性霸权：批判苏格拉底以来对生命本能的压抑</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="inline-block w-2 h-2 rounded-full bg-nietzsche mt-2 mr-2"></span>
+                                <span>重估价值：否定"同情/谦卑"的奴隶道德</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="inline-block w-2 h-2 rounded-full bg-nietzsche mt-2 mr-2"></span>
+                                <span>克服虚无：以权力意志成为"超人"</span>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- 思想家列表主内容区 -->
+            <main class="lg:w-4/5">
+                <!-- 1. 尼采及核心继承者 -->
+                <section id="nietzsche" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-nietzsche mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #e41a1c;">尼采及核心继承者</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        直接继承尼采思想并推向新领域的思想家，以"权力意志""谱系学""反理性"为核心，拒绝虚无主义的沉沦，主张肯定生命或深化批判。
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 尼采 -->
+                        <div class="thinker-card" data-faction="nietzsche">
+                            <div class="p-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-bold" style="color: #e41a1c;">弗里德里希·尼采</h3>
+                                    <span class="faction-tag" style="background-color: rgba(228,26,28,0.1); color: #e41a1c;">核心</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1844-1900 | 德国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>权力意志、超人哲学、上帝已死、重估一切价值、主人-奴隶道德</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《悲剧的诞生》《查拉图斯特拉如是说》《善恶的彼岸》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    思想旨在"炸毁西方文明根基"，反对基督教-柏拉图主义、理性主义与传统道德，试图以"超人"克服"上帝已死"后的现代性虚无主义。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 齐奥朗 -->
+                        <div class="thinker-card" data-faction="nietzsche">
+                            <div class="p-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-bold" style="color: #e41a1c;">埃米尔・齐奥朗（Emil Cioran）</h3>
+                                    <span class="faction-tag" style="background-color: rgba(228,26,28,0.1); color: #e41a1c;">回声与幽灵</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1911-1995 | 罗马尼亚裔法国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以 "激进反狂热主义" 为核心，质疑一切绝对信念（意识形态、宗教等），认为信仰付诸行动必致暴力；用 "否定性谱系学" 剖析狂热与救世主情结的根源；推崇 "失败的美学"，主张以拥抱怀疑、拒绝集体信仰的姿态，规避成为历史暴行的合谋者。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《在绝望之巅》《眼泪与圣徒》《解体概要》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                        被誉为20世纪的尼采。他非尼采的继承者，而是其思想的 "诊断者与后果承担者"—— 尼采提出 "上帝之死" 与 "权力意志"，齐奥朗则直面 20 世纪历史的溃烂。查拉图斯特拉呼唤闪电到来，世界以一场蔓延世界的脓血破裂回答。
+                                    </p>
+                            </div>
+                        </div>
+
+                        <!-- 福柯 -->
+                        <div class="thinker-card" data-faction="nietzsche">
+                            <div class="p-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-bold" style="color: #e41a1c;">米歇尔·福柯</h3>
+                                    <span class="faction-tag" style="background-color: rgba(228,26,28,0.1); color: #e41a1c;">继承者</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1926-1984 | 法国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>权力/知识理论、谱系学、话语分析</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《疯癫与文明》《规训与惩罚》《词与物》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    "法兰西的尼采"，将尼采的"权力意志"和"谱系学"发展为权力分析，认为权力是"生产性的"——它生产知识、真理和主体，揭露理性、疯癫、性的建构本质。
+                                </p>
+                            </div>
+                        </div>
+
+                      <!-- 德勒兹 -->
+                        <div class="thinker-card" data-faction="nietzsche">
+                            <div class="p-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-bold" style="color: #e41a1c;">吉尔·德勒兹</h3>
+                                    <span class="faction-tag" style="background-color: rgba(228,26,28,0.1); color: #e41a1c;">继承者</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1925-1995 | 法国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>后结构主义、欲望哲学、块茎理论</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《反俄狄浦斯》《千高原》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    反对将 “权力意志” 理解为 “支配性力量”，转而视其为 “生命自我创造的能量”；其 “永恒轮回” 也不再是 “重复过去”，而是 “肯定所有生成的可能性”，彻底呼应了尼采 “肯定生命、克服虚无” 的核心追求，是尼采思想在 20 世纪后现代语境下的重要 “续篇”。
+                                </p>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </section>
+
+                <!-- 2. 存在主义谱系 -->
+                <section id="existential" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-existential mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #4B0082;">存在主义谱系</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        直接回应尼采"上帝已死"命题的思想流派——承认世界的虚无本质，但拒绝尼采"超人哲学"的个体超越，转而强调"通过个体选择与反抗赋予生命意义"，是对尼采思想的"人道主义化改造"。
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 萨特 -->
+                        <div class="thinker-card" data-faction="existential">
+                            <div class="p-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-bold" style="color: #4B0082;">让-保罗·萨特</h3>
+                                    <span class="faction-tag" style="background-color: rgba(75,0,130,0.1); color: #4B0082;">核心</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1905-1980 | 法国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>存在先于本质、绝对自由与责任、"介入"文学</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《存在与虚无》《恶心》《肮脏的手》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    存在主义的"行动派"——继承尼采"上帝已死"的虚无前提，但反对"超人"对"群氓道德"的蔑视，主张"自由即责任"，要求个体通过"介入社会"的选择对抗虚无（如参与反法西斯运动），是对尼采思想的"伦理化修正"。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 加缪 -->
+                        <div class="thinker-card" data-faction="existential">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4B0082;">阿尔贝·加缪</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1913-1960 | 法国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>荒诞哲学、以反抗赋予生命意义、拒绝自杀与革命暴力</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《局外人》《鼠疫》《西西弗神话》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    存在主义的"诗意派"——与尼采同样直面"世界无意义"的荒诞，但拒绝"权力意志"的斗争逻辑，提出"西西弗式反抗"：明知巨石终将滚落，仍坚持推石上山，以"对生命的热爱"对抗虚无，是对尼采"肯定生命"的温和诠释。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 克尔凯郭尔（从基督教谱系迁移，逻辑上更贴合） -->
+                        <div class="thinker-card" data-faction="existential">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4B0082;">索伦·克尔凯郭尔</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1813-1855 | 丹麦哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>真理即主观性、人生三阶段（审美-伦理-宗教）、个体与上帝的"绝对关系"</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《恐惧与战栗》《非此即彼》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    存在主义"鼻祖"——比尼采更早批判"理性对个体的压制"，主张"信仰是个体的冒险"（如亚伯拉罕献祭以撒的"荒诞信仰"），虽以基督教为归宿，但"关注个体存在困境"的核心，直接启发了萨特、加缪，是连接基督教思想与存在主义的关键桥梁。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 海德格尔 -->
+                        <div class="thinker-card" data-faction="existential">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4B0082;">马丁·海德格尔</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1889-1976 | 德国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>存在论差异、向死存在、技术批判、诗与思</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《存在与时间》《林中路》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    存在主义的"哲学奠基者"——深受尼采影响，将"上帝已死"转化为"存在的遗忘"问题，主张通过"向死存在"唤醒对"此在"（Dasein）本真状态的理解。虽曾与纳粹合作备受争议，但其对"技术时代人类困境"的思考，深化了尼采对"虚无主义"的批判。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. 先驱与同路人 -->
+                <section id="pioneer" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-pioneer mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #377eb8;">先驱与同路人</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        在尼采之前或同时代，提出相似批判视角的思想家——他们或揭示世界的"残酷本质"，或挑战理性霸权，但结论与尼采存在差异，成为尼采思想的重要源头。
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 叔本华 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">阿图尔·叔本华</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1788-1860 | 德国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>作为"意志"的世界、生命意志的否定</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《作为意志和表象的世界》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    尼采最直接的精神导师与对手：叔本华看到世界的"残酷"本质，但主张"否定生命意志"以摆脱痛苦；尼采则将"意志"转化为"权力意志"，主张积极肯定生命。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 陀思妥耶夫斯基 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">费奥多尔·陀思妥耶夫斯基</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1821-1881 | 俄国小说家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>探索上帝、自由意志、善恶与疯狂</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《罪与罚》《卡拉马佐夫兄弟》《地下室手记》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    尼采盛赞的"唯一能教我点什么的心理学家"，通过小说深刻揭示"上帝死后"的人类心理：理性走向疯狂（《地下室手记》）、虚无主义催生暴力（《群魔》），但其"超人"理念（拉斯柯尔尼科夫）充满东正教负罪感，与尼采截然不同。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 布莱克 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">威廉·布莱克</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1757-1827 | 英国诗人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>反对理性霸权、强调想象力</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《天真与经验之歌》《天堂与地狱的婚姻》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    尼采的先行者，攻击"单一视角"的理性与僵化宗教教条，推崇充满生命力的"能量"，其"天堂与地狱的婚姻"思想与尼采"超越善与恶"有神合之处。
+                                </p>
+                            </div>
+                        </div>
+
+                       <!-- 荷尔德林 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">弗里德里希·荷尔德林（Friedrich Hölderlin）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1770-1843 | 德国诗人、哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以诗歌重构"绝对"概念，打破理性体系桎梏，将真理交付酒神精神与希腊乡愁，构建"反体系之体系"的诗化哲学。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《面包与葡萄酒》《许佩里翁》《致狄奥尼索斯》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为"先驱与同路人"中连接哲学与诗性的关键人物，他用诗句赎回被逻辑囚禁的"绝对"，以"审美救赎"为尼采提供直接范本——其对狄奥尼索斯精神的德语转译、对希腊悲剧精神的诗性复活，被尼采写入《悲剧的诞生》脚注。那句"人，诗意地栖居"，恰是对体系化哲学的温柔反叛，为非理性主义开辟了诗性路径。
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- 第欧根尼 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">第欧根尼</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>约公元前412-323 | 古希腊犬儒学派哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>犬儒主义、极端践行自然生活、蔑视世俗规范</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    古典时代的"疯子"，以行为艺术践踏雅典社会的虚伪价值观（类似尼采批判的"奴隶道德"），挑战苏格拉底，体现前苏格拉底哲学的野性，深刻影响齐奥朗。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 卢克莱修 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">卢克莱修（Titus Lucretius Carus）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>约前99-前55 | 古罗马诗人、哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>继承并发展伊壁鸠鲁原子论，提出 "原子偶然偏斜（clinamen）" 理论，否定世界目的论与超自然支配。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《物性论》（唯一传世长诗，系统阐述原子论哲学）</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为 "先驱与同路人" 中前尼采思想的重要铺垫者，他以诗歌形式普及原子论 —— 主张万物由原子构成，原子的偶然偏斜打破机械决定论，证明世界无预设目的。这一观点早于尼采两千年拆解目的论，为后世批判传统价值体系提供了古代思想资源，其对 "自然本性" 的追问，也与尼采对 "生命本真" 的探索形成跨时空呼应。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 安托南·阿尔托 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">安托南・阿尔托</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1896-1948 | 法国戏剧理论家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出 "残酷戏剧" 理论，以剧场为载体反抗西方理性霸权对人性的规训，主张用感官冲击打破艺术与生活的界限</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《戏剧及其重影》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    其 "残酷戏剧" 并非对某一特定思想谱系的直接继承，而是与尼采 "酒神精神" 形成跨时空的 "同路呼应"—— 二者均反对理性对生命本能的压制，阿尔托将这种反抗落地为剧场实践：通过破除舞台与观众的 "安全距离"，用肢体、声音、视觉的极致冲击，迫使观众直面生命本真的残酷与混沌，这种对 "理性霸权" 的批判路径，与尼采对传统形而上学的解构方向一致，但更聚焦于艺术场域的变革，故归为 "同路人"。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 尼可罗・马基雅维里 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">尼可罗・马基雅维里（Niccolò Machiavelli）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1469-1527 | 意大利政治思想家、历史学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出 "Virtù（德性）- 命运" 二元关系，主张政治应脱离道德评判，以 "价值中性" 视角描述权力运作本质。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《君主论》《论李维》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    他打破传统政治哲学的道德桎梏 —— 认为君主应兼具 "狮子的力量" 与 "狐狸的狡诈"，权力的获取与维系无需依附 "应当" 的道德规范，只需直面 "是" 的现实规律。这种对政治本质的赤裸剖析，早于尼采批判 "道德伪装"，其 "反传统价值" 的思路，成为尼采解构传统道德的重要思想前驱。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 托马斯・霍布斯 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #377eb8;">托马斯・霍布斯（Thomas Hobbes）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1588-1679 | 英国政治哲学家、思想家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出 "自然状态" 理论，构建 "权力 - 恐惧" 本体论，认为人类因对死亡的恐惧与对权力的追求，需通过社会契约建立国家。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《利维坦》《论公民》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    在自然状态中，"一切人对一切人的战争" 是权力意志的原始暴露，这一描述被视作尼采 "权力意志" 理论的史前雏形。其对人性 "非道德化" 的审视，与尼采拆解 "人性善" 的传统认知一脉相承，为后世非理性主义哲学提供了政治哲学维度的铺垫。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 基督教谱系 -->
+                <section id="christian" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-christian mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #4daf4a;">基督教谱系</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        尼采主要批判的"思想堡垒"——并非简单的"迷信"，而是用理性（奥古斯丁、阿奎那、康德）或超越理性（索洛维约夫、薇依）捍卫信仰的思想家，构成与尼采的深刻对话。
+                    </p>
+                    
+                    <!-- 危机神学内战时间轴 -->
+                    <div data-faction="christian" class="mt-8 p-6 border border-green-200 rounded-lg bg-green-50 mb-6">
+                        <h3 class="text-lg font-bold text-green-600 mb-1 text-center">危机神学内战 · 1930-1946 · 要不要给人类理性留个后门？</h3>
+                        
+                        <!-- 引言 -->
+                        <p class="text-sm text-gray-700 mb-6">
+                            第一次世界大战的恐怖，炸毁了欧洲对"人类理性进步"的乐观信仰。在这片废墟上，"危机神学"横空出世，试图重建与上帝的连接。然而，在同一面"危机"的大旗下，创始人们却因一个核心问题爆发内战：在上帝那令人战栗的"绝对超越性"面前，人类的理性、历史和语言，究竟是通往神圣的阶梯，还是必须被彻底炸毁的巴别塔？
+                        </p>
+                        
+                        <!-- 时间轴 -->
+                        <div class="relative px-4 py-6">
+                            <!-- 轴中心线 -->
+                            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-green-500 transform -translate-x-1/2 z-0"></div>
+                            <!-- 水平辅助线 -->
+                            <div class="absolute left-0 right-0 top-3 h-0.5 bg-green-300 z-0"></div>
+                            
+                            <!-- 时间点容器 -->
+                            <div class="relative z-10 flex justify-between">
+                                <!-- 1922-1930 -->
+                                <div class="timeline-item cursor-pointer" data-person="barth-1930">
+                                    <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white font-bold hover:bg-green-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        1
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-green-700" style="height: 75px;">1922-1930<br><strong>统一战线</strong><br>卡尔·巴特</div>
+                                </div>
+                                
+                                <!-- 1934 -->
+                                <div class="timeline-item cursor-pointer" data-person="natural-theology">
+                                    <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white font-bold hover:bg-green-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        2
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-green-700" style="height: 75px;">1934<br><strong>决裂的导火索</strong><br>自然神学之争</div>
+                                </div>
+                                
+                                <!-- 1941 -->
+                                <div class="timeline-item cursor-pointer" data-person="bultmann-1941">
+                                    <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white font-bold hover:bg-green-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        3
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-green-700" style="height: 80px;">1941<br><strong>布尔特曼的修正主义</strong><br>去神话化运动</div>
+                                </div>
+                                
+                                <!-- 1946 -->
+                                <div class="timeline-item cursor-pointer" data-person="tillich-1946">
+                                    <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white font-bold hover:bg-green-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        4
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-green-700" style="height: 80px;">1946<br><strong>田立克的第三条道路</strong><br>存在本身与终极关切</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 奥古斯丁 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">奥古斯丁</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>354-430 | 古罗马基督教神学家、哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出"原罪论"与"预定论"，划分"上帝之城"与"世俗之城"，主张信仰高于理性</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《上帝之城》《忏悔录》《论三位一体》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    基督教神学核心奠基者，以《上帝之城》构建神学政治观，为中世纪基督教思想确立框架，其"信仰优先"理念被阿奎那继承发展，是基督教谱系中连接古代与中世纪的关键人物。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 阿奎那 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">托马斯・阿奎那</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>约 1225 年 - 1274 年 | 意大利中世纪经院哲学家、神学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>将亚里士多德哲学与基督教神学相融合，构建庞大经院哲学体系</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《纯粹理性批判》《实践理性批判》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    他承续奥古斯丁的基督教思想，汲取亚里士多德哲学精华，成功调和天恩与人性、神学与哲学。中世纪神学和哲学的重要支柱，对后世基督教思想及西方哲学发展影响深远 。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 皮科・德拉・米兰多拉 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">皮科・德拉・米兰多拉（Pico della Mirandola）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1463-1494 | 意大利文艺复兴哲学家、基督教人文主义者</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>人类无固定本质；上帝赋予自由意志，使人可通过理性与道德实践自我塑造，趋近神性或堕入兽性。兼容古希腊哲学、犹太神秘学与基督教神学，打破神学垄断，开辟"以人文补全神学"的文艺复兴路径。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《论人类的尊严》《900个哲学命题》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    上帝将你置于世界中心，使你能观察一切；赋予你自由意志，使你能塑造自身 —— 你既非被固定为天使，也非被绑定为野兽，而是你自己的塑造者。
+                                </p>
+                                <p class="text-sm text-gray-700">
+                                    其思想以人文精神对基督教 "人观" 进行重构：把尊严从"神的被动恩赐"转为"主动的自我塑造"，为"神学与人文对话"埋下伏笔，也与经院哲学的僵化体系形成差异。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 圣女大德兰 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">圣女大德兰</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1515-1582 | 西班牙加尔默罗会修女、神秘学家、教会圣师</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>通过默观祈祷与上帝合一；"灵魂的黑夜"为必经的净化阶段，提出"心灵城堡"七重居所模型，系统阐述天主教神秘主义灵修理论。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《自传》《全德之路》（也译为《灵修之路》）《心灵城堡》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    她将神秘体验转化为可操作的灵修路径，为女性提供神学话语权，奠定天主教默观传统范式；"黑夜"概念亦成为后世存在主义与心理学描述"意义真空"的神学原型。
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <!-- 康德 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">伊曼努尔·康德</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1724-1804 | 德国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>批判哲学、先验唯心主义、绝对律令</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《纯粹理性批判》《实践理性批判》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    以理性捍卫信仰的代表，提出"人为自然立法"，试图为宗教留下"理性限度内"的空间，是人文主义的哲学基础，也是尼采批判的"理性主义宗教"靶子。他的 "道德自律""普遍法则" 为现代人权理论、伦理哲学提供了核心框架；"现象与物自体" 的区分则影响了胡塞尔现象学、存在主义等后世流派，成为现代哲学反思 "认知边界" 的重要起点。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 西蒙娜·薇依 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">西蒙娜·薇依</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1909-1943 | 法国神秘主义者</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>关注苦难、倾空（decreation）、爱与注意力</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《重力与神恩》《等待上帝》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    基督教神秘主义者，挑战并完善莱布尼茨《神义论》，主张通过"承受苦难"与上帝合一，与尼采"肯定痛苦"的主人道德形成价值观对立。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 索洛维约夫 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">弗拉基米尔·索洛维约夫</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1853-1900 | 俄罗斯哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>基督教哲学、宇宙统一、神人类思想</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《完整知识的哲学原理》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    俄罗斯哲学的奠基人之一，东正教哲学的重要代表，主张通过哲学实现宗教与科学的统一，其思想对陀思妥耶夫斯基等俄国作家有深远影响。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 卡尔・巴特 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">卡尔・巴特（Karl Barth）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1886-1968 | 瑞士神学家，辩证神学创始人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出 "辩证神学"，强调上帝是 "绝对他者"，人类理性与语言无法触及上帝本质，反对将基督教信仰与世俗文化、人类权力话语捆绑。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《罗马书释义》《教会教义学》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为基督教谱系中被尼采批判的 "高级辩手"，他以 "上帝全然他者" 的命题直面尼采对 "人类伪造上帝" 的指控 —— 认为尼采抨击的 "上帝" 本质是人类用理性与权力建构的偶像，而真正的上帝超越一切人类认知框架。这种对 "偶像崇拜" 的批判看似与尼采有共鸣，实则以 "绝对他者" 重构上帝权威，否定人类借信仰攫取权力的可能，成为尼采 "上帝之死" 命题的重要神学回应者。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 保罗・田立克 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">保罗・田立克（Paul Tillich）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1886-1965 | 德国裔美国神学家，存在主义神学代表</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>构建 "存在 - 勇气的本体论"，将宗教信仰定义为对 "终极关切" 的回应，用 "存在" 与 "虚无" 的辩证关系解释人类焦虑，主张以 "存在的勇气" 对抗虚无。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《系统神学》《存在的勇气》《新教时代》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    属基督教谱系中试图与现代哲学对话的 "辩手"，其对 "焦虑" 与 "虚无" 的剖析直接与尼采的 "深渊" 命题碰撞 —— 尼采认为虚无是上帝死后的必然结果，田立克却将焦虑视为 "存在被虚无照亮" 的契机，主张通过信仰获取 "直面虚无的勇气"。他既吸收存在主义对人类生存困境的洞察，又拒绝尼采对信仰的全盘否定，试图为现代社会的精神危机提供基督教式解决方案，成为尼采思想的神学 "对话者" 而非单纯的反驳者。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 勒内・吉拉尔 -->
+                        <div class="thinker-card" data-faction="christian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #4daf4a;">勒内・吉拉尔（René Girard）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1923-2015 | 法国裔美国人类学家、神学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出 "模仿欲望" 与 "替罪羊机制" 理论，认为人类欲望源于对他人的模仿，社会冲突通过将 "替罪羊" 神圣化得以缓解；主张基督教十字架事件揭露了 "暴力神圣化" 的陷阱。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《暴力与神圣》《替罪羊》《论世界创立以来的隐秘事物》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为基督教谱系中重构信仰意义的 "辩手"，他直接回应尼采对 "基督教是奴隶道德" 的批判 —— 认为十字架并非奴隶道德的顶峰，而是对人类社会 "以暴力解决冲突" 的根本否定。尼采将基督教视为弱者的精神慰藉，吉拉尔却将其解读为 "揭露替罪羊骗局" 的真理事件，通过重构基督教核心符号的意义，为信仰辩护，同时也为理解人类暴力与道德起源提供了新路径，成为与尼采思想 "正面交锋" 的现代神学家。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 理性主义谱系 -->
+                <section id="rationalist" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-rationalist mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #984ea3;">理性主义谱系</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        尼采批判的"理性霸权"核心源头——从苏格拉底的"诘问法"到黑格尔的"绝对精神"，均试图用理性构建"完整的世界解释体系"，压抑生命的混沌与生成本质。
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 毕达哥拉斯 -->
+                        <div class="thinker-card" data-faction="rationalist">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #984ea3;">毕达哥拉斯</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>约前570-前495 | 古希腊数学家、哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出"数是万物的本原"，认为宇宙秩序由数的和谐构成，主张通过数学与理性探索存在的本质。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>无传世著作，思想通过门徒记载留存（如《金言》）</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为理性主义谱系的远古先驱，他突破了古希腊自然哲学的物质本原论，首次将抽象的"数"确立为世界的核心——认为数的比例与和谐支配着宇宙、音乐乃至伦理。这种"以理性（数学）统摄存在"的思路，为后世理性主义（从柏拉图的"理念论"到笛卡尔的"确定性追求"）提供了关键灵感：理性主义对"逻辑推演"与"形式体系"的执着，可追溯至他对"数的普遍法则"的信仰。尼采批判的"理性对生命的格式化"，在其将万物还原为数字秩序的尝试中，已可见原始雏形。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 苏格拉底 -->
+                        <div class="thinker-card" data-faction="rationalist">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #984ea3;">苏格拉底</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>公元前470-399 | 古希腊哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>诘问法、承认无知、知识即美德</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    尼采眼中"希腊文化衰落的开始"——用"诘问法"（理性对话）取代希腊悲剧的"酒神精神"，将生命本能导向"知识与美德"，压抑了原始生命力。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 柏拉图 -->
+                        <div class="thinker-card" data-faction="rationalist">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #984ea3;">柏拉图</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>公元前427-347 | 古希腊哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>理念论、灵魂三分说、哲学王统治</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《理想国》《会饮篇》《斐多篇》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    继承苏格拉底的理性主义，虚构"理念界"（真实世界）与"表象界"（现实世界），将现实贬低为"理念的模仿"，成为尼采批判的"基督教-柏拉图主义"源头。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 亚里士多德 -->
+                        <div class="thinker-card" data-faction="rationalist">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #984ea3;">亚里士多德（Aristotle）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>前384-前322 | 古希腊哲学家、科学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出 "四因说"（质料因、形式因、动力因、目的因），构建 "形式 - 质料" 二元体系，认为万物朝向预设目的运动。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《形而上学》《物理学》《尼各马可伦理学》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为 "理性主义谱系" 的 "体系巨匠"，他以逻辑与理性搭建完整哲学体系 ——"目的因" 是核心，主张自然与人类活动均有终极目标，这一观点恰是尼采批判的 "最大谎言"，成为尼采解构传统理性目的论的重要靶标。其对 "形式"（本质）的强调，也与后世理性主义追求 "确定性" 的倾向一脉相承，奠定了西方理性传统的核心框架。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 勒内・笛卡尔 -->
+                        <div class="thinker-card" data-faction="rationalist">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #984ea3;">勒内・笛卡尔（René Descartes）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1596-1650 | 法国哲学家、数学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出 "我思故我在（Cogito, ergo sum）"，确立 "主体性基底"，主张以理性怀疑为起点，构建确定性知识体系。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《第一哲学沉思集》《谈谈方法》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    属 "理性主义谱系" 的 "体系巨匠"，他以 "我思" 为基石，将人类意识（理性）确立为知识与存在的核心。这种 "把生命锁进意识小阁楼" 的主体性哲学，虽推动了近代理性主义发展，却成为尼采批判的对象 —— 尼采认为其割裂了生命与本能，主张打破理性对生命的禁锢，恢复生命本真的活力，二者在 "理性与生命" 的关系上形成鲜明对立。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 黑格尔 -->
+                        <div class="thinker-card" data-faction="rationalist">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #984ea3;">格奥尔格·威廉·弗里德里希·黑格尔</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1770-1831 | 德国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>辩证法、绝对精神、历史哲学</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《精神现象学》《逻辑学》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    德国古典哲学的集大成者，提出"正反合"辩证发展观，认为历史是"绝对精神"的自我实现。尼采早期深受其影响，后期则激烈批判其"体系哲学"对生命的压制。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 谢林 -->
+                        <div class="thinker-card" data-faction="rationalist">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #984ea3;">弗里德里希·威廉·约瑟夫·谢林（Friedrich Wilhelm Joseph Schelling）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1775-1854 | 德国哲学家，德国观念论代表</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出"同一哲学"，主张自然与自由的终极同一；将"恶"与"混沌"纳入绝对精神体系，承认其作为存在的必要环节，为理性主义注入辩证裂痕。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《论人类自由的本质》《世界时代》《自然哲学体系初稿》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    属"理性主义谱系"中德国观念论的"修正者"，其"自然-自由同一"理论为尼采"命运-爱"概念埋下伏笔。1809年《论人类自由的本质》中"自由=创生-毁灭的同一"命题，将"恶"视作理性内核的黑暗动力，成为尼采"权力意志"的隐秘前身。他让绝对精神"吞食混沌"的尝试，使封闭的理性体系显露出可供突破的裂痕，成为连接理性主义与非理性主义的"自由之桥"。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 新增：语言学谱系 -->
+                <section id="linguistics" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-linguistics mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #9370DB;">语言学谱系</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        探索"语言如何塑造认知与权力"的思想流派——从"语言相对论"到"隐喻与暴力话语"，揭示语言不仅是"表达工具"，更是"现实建构的框架"，与尼采对"话语即权力"的洞察形成共鸣。
+                    </p>
+                        
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 萨丕尔-沃尔夫 -->
+                        <div class="thinker-card" data-faction="linguistics">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #9370DB;">爱德华·萨丕尔 & 本杰明·李·沃尔夫</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1884-1939 & 1897-1941 | 美国语言学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>语言相对论（语言结构决定认知模式）</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《语言、思维和现实》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    语言相对论创始人——提出"语言不是透明的窗户，而是塑造现实的模具"，如爱斯基摩语对"雪"的多维度命名，直接影响伊藤计划的科幻创作，是对"认知与语言关系"的开创性探索。
+                                </p>
+                            </div>
+                        </div>
+
+
+                                                <!-- 维特根斯坦 -->
+                        <div class="thinker-card" data-faction="linguistics">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #9370DB;">路德维希·维特根斯坦</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1889-1951 | 奥地利裔英国哲学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>语言图像论、语言游戏说</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《逻辑哲学论》《哲学研究》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    挑战语言的"构成极限"，认为"不可说的应当保持沉默"，其对"语言界限"的思考与尼采对"理性界限"的批判有隐性对话。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 乔姆斯基 -->
+                        <div class="thinker-card" data-faction="linguistics">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #9370DB;">诺姆·乔姆斯基</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1928- | 美国语言学家、哲学家、政治评论家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>转换生成语法理论、语言具有先天普遍语法结构、政治批判</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《句法结构》《美国权力与新官僚》《制造共识》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    语言学"认知革命"的引领者——打破传统结构主义框架，提出人类天生具备语言习得机制，以深层语法规则生成无限语句，挑战行为主义对语言的机械解释。政治上，他秉持自由社会主义立场，以详实史料批判美国霸权主义与媒体操控，展现知识分子的社会责任感。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 列维-斯特劳斯 -->
+                        <div class="thinker-card" data-faction="linguistics">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #9370DB;">克洛德·列维-斯特劳斯</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1908-2009 | 法国人类学家（语言学交叉）</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>文化的深层语言结构、亲属关系的符号系统</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《野性的思维》《亲属关系的基本结构》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    结构主义语言学的跨学科应用——认为"不同文化的亲属制度、神话故事，本质是相同的语言符号结构"，拓展了语言研究的边界，也为尼采"文化是权力意志的表达"提供了实证视角。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 罗兰·巴特 -->
+                        <div class="thinker-card" data-faction="linguistics">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #9370DB;">罗兰·巴特</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1915-1980 | 法国文学理论家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>"作者之死"、符号学分析、大众文化批判</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《神话学》《S/Z》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    用符号学拆解语言与文化——认为"文本意义由读者生产，而非作者赋予"，其对"广告、时尚的符号解码"，揭示语言如何将意识形态自然化，与尼采对"道德符号的解构"一脉相承。
+                                </p>
+                            </div>
+                        </div>
+
+                                        <!-- 哈雷尔 -->
+                        <div class="thinker-card" data-faction="linguistics">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #9370DB;">D. F. 哈雷尔</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>当代学者</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>隐喻在意识形态与暴力话语中的建构作用</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《隐喻战争：人文主义话语中的概念隐喻》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    受福柯影响——研究"战争隐喻"如何合法化暴力（如"打击犯罪""消灭疫情"），揭示语言修辞背后的权力逻辑，是对尼采"话语即权力"思想的现代语言学延伸。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 语言学谱系双时间轴 -->
+                    <div class="mt-8 space-y-6">
+                        <!-- 心智认知革命时间轴 -->
+                            <div data-faction="linguistics" class="mb-6 p-6 border border-purple-200 rounded-lg bg-purple-50">
+                                <h3 class="text-lg font-bold text-purple-600 mb-1 text-center">心智认知革命 · 1956-1972 · "黑箱"必须被打开</h3>
+                                
+                                <!-- 引言 -->
+                                <div class="mb-6 text-sm text-gray-700">
+                                    <p>一场思想史上的"王子复仇记"。被行为主义（Behaviorism）放逐了三十年的"心智"（认知、意识）公主，在新一代骑士乔姆斯基的带领下，向统治心理学界的国王斯金纳发起了绝地反击。战场的核心只有一个：人类的心灵，究竟是一个等待外部刺激填满的"白板"，还是一个自带复杂蓝图的"生成引擎"？</p>
+                                </div>
+                                 
+                                <!-- 时间轴 -->
+                                <div class="relative px-4 py-6">
+                                    <!-- 轴中心线 -->
+                                    <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-purple-500 transform -translate-x-1/2 z-0"></div>
+                                    <!-- 水平辅助线 -->
+                                    <div class="absolute left-0 right-0 top-3 h-0.5 bg-purple-300 z-0"></div>
+                                    
+                                    <!-- 时间点容器 -->
+                                    <div class="relative z-10 flex justify-between">
+                                        <!-- 1956 -->
+                                        <div class="timeline-item cursor-pointer" data-person="skinner">
+                                            <div class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold hover:bg-purple-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                                1
+                                            </div>
+                                            <div class="text-center mt-2 font-medium text-purple-700" style="height: 70px;">1956<br><strong>旧帝国最后的辉煌</strong><br>斯金纳</div>
+                                        </div>
+                                        
+                                        <!-- 1959 -->
+                                        <div class="timeline-item cursor-pointer" data-person="chomsky">
+                                            <div class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold hover:bg-purple-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                                2
+                                            </div>
+                                            <div class="text-center mt-2 font-medium text-purple-700" style="height: 75px;">1959<br><strong>革命的第一枪</strong><br>乔姆斯基</div>
+                                        </div>
+                                        
+                                        <!-- 1967 -->
+                                        <div class="timeline-item cursor-pointer" data-person="neisser">
+                                            <div class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold hover:bg-purple-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                                3
+                                            </div>
+                                            <div class="text-center mt-2 font-medium text-purple-700" style="height: 70px;">1967<br><strong>新王国的法典</strong><br>奈塞尔</div>
+                                        </div>
+                                        
+                                        <!-- 1972 -->
+                                        <div class="timeline-item cursor-pointer" data-person="newell-simon">
+                                            <div class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold hover:bg-purple-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                                4
+                                            </div>
+                                            <div class="text-center mt-2 font-medium text-purple-700" style="height: 80px;">1972<br><strong>帝国的黄昏</strong><br>纽厄尔 & 西蒙</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                            
+                            <!-- 结构主义内战时间轴 -->
+                            <div data-faction="linguistics" class="mb-6 p-6 border border-indigo-200 rounded-lg bg-indigo-50">
+                                <h3 class="text-lg font-bold text-indigo-600 mb-1 text-center">结构主义内战 · 1957-1966 · 人，在结构中消失又归来</h3>
+                                
+                                <!-- 引言 -->
+                                <div class="mb-6 text-sm text-gray-700">
+                                    <p>结构主义，是二战后法国思想界的一场"科学化"革命。它试图用冰冷的、类似数学的"结构"来解释一切——神话、亲属关系、文学、乃至无意识。在这个宏大的理论帝国里，"人"的主体性和自由意志被宣告为一种幻觉。然而，帝国最辉煌的时刻，也是其内部裂痕最深之时。核心战场是：当"作者已死"、"主体消散"之后，谁，或者说，什么，在说话？</p>
+                                </div>
+                                 
+                                <!-- 时间轴 -->
+                                <div class="relative px-4 py-6">
+                                    <!-- 轴中心线 -->
+                                    <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-indigo-500 transform -translate-x-1/2 z-0"></div>
+                                    <!-- 水平辅助线 -->
+                                    <div class="absolute left-0 right-0 top-3 h-0.5 bg-indigo-300 z-0"></div>
+                                    
+                                    <!-- 时间点容器 -->
+                                    <div class="relative z-10 flex justify-between">
+                                        <!-- 1958 -->
+                                        <div class="timeline-item cursor-pointer" data-person="levi-strauss">
+                                            <div class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold hover:bg-indigo-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                                1
+                                            </div>
+                                            <div class="text-center mt-2 font-medium text-indigo-700" style="height: 80px;">1958<br><strong>帝国的奠基</strong><br>列维-斯特劳斯</div>
+                                        </div>
+                                        
+                                        <!-- 1964-1966 -->
+                                        <div class="timeline-item cursor-pointer" data-person="barthes">
+                                            <div class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold hover:bg-indigo-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                                2
+                                            </div>
+                                            <div class="text-center mt-2 font-medium text-indigo-700" style="height: 70px;">1964<br><strong>最亲密的战友</strong><br>巴特</div>
+                                        </div>
+                                        
+                                        <!-- 决裂区间 -->
+                                        <div class="text-center timeline-item cursor-pointer" data-person="struct-rupture" style="position: absolute; left: 50%; bottom: -60px; transform: translateX(-50%);">
+                                            <span class="inline-block px-6 py-1 bg-red-100 text-red-700 rounded-full font-bold text-sm border border-red-300 hover:bg-red-200 transition-colors">
+                                                1966 <span style="color: red;">⚡</span> 结构主义的终结
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- 1966 -->
+                                        <div class="timeline-item cursor-pointer" data-person="lacan-derrida">
+                                            <div class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold hover:bg-indigo-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                                3
+                                            </div>
+                                            <div class="text-center mt-2 font-medium text-indigo-700" style="height: 90px;">1966<br><strong>帝国的裂解</strong><br>拉康 & 德里达</div>
+                                        </div>
+                                        
+                                        <!-- 1967-1968 -->
+                                        <div class="timeline-item cursor-pointer" data-person="may-storm">
+                                            <div class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold hover:bg-indigo-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                                4
+                                            </div>
+                                            <div class="text-center mt-2 font-medium text-indigo-700" style="height: 75px;">1968<br><strong>法兰克福到巴黎</strong><br>五月风暴</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                        </div>
+                    </section>
+
+                <!-- 新增：深度心理学谱系 -->
+                <section id="psychology" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-psychology mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #1E90FF;">深度心理学谱系</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        用"理性框架"探索"非理性领域"的思想流派——既继承科学理性的方法论（如精神分析的临床观察），又解构传统理性主体（如"自我的虚幻性"），与尼采对"理性霸权"的批判形成隐性对话。
+                    </p>
+                    
+                    <!-- 精神分析内战时间轴 -->
+                    <div class="mb-6 p-4 border border-blue-200 rounded-lg bg-blue-50">
+                        <h3 class="text-lg font-bold text-blue-600 mb-3 text-center">精神分析内战 · 1907-1966 · 弑父、流放与还乡</h3>
+                        <p class="text-sm text-gray-700 mb-4">
+                            这是一场围绕"无意识"这片新大陆的王权之争。弗洛伊德是发现者与最初的君主，他绘制了地图，确立了"性欲"（力比多）为这片大陆的根本法则。然而，他亲自选定的王储荣格，却因发现了大陆深处更古老的图腾（集体无意识）而被流放；数十年后，一位宣称"回归"的骑士拉康，却用语言学的咒语彻底重塑了这片大陆的地貌。
+                        </p>
+                        
+                        <!-- 时间轴 -->
+                        <div class="relative px-4 py-6">
+                            <!-- 轴中心线 -->
+                            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-blue-500 transform -translate-x-1/2 z-0"></div>
+                            <!-- 水平辅助线 -->
+                            <div class="absolute left-0 right-0 top-3 h-0.5 bg-blue-300 z-0"></div>
+                            
+                            <!-- 时间点容器 -->
+                            <div class="relative z-10 flex justify-between">
+                                <!-- 1907年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1907">
+                                    <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold hover:bg-blue-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        1
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-blue-700" style="height: 80px;">1907<br><strong>王国建立</strong><br>弗洛伊德 & 荣格</div>
+                                </div>
+                                
+                                <!-- 1912-1913年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1912">
+                                    <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold hover:bg-blue-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        2
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-blue-700" style="height: 80px;">1912-1913<br><strong>王储叛乱</strong><br>荣格的分裂</div>
+                                </div>
+                                 
+                                <!-- 1953年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1953">
+                                    <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold hover:bg-blue-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        3
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-blue-700" style="height: 80px;">1953<br><strong>宣称还乡</strong><br>拉康的登场</div>
+                                </div>
+                                 
+                                <!-- 1966年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1966">
+                                    <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold hover:bg-blue-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        4
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-blue-700" style="height: 80px;">1966<br><strong>新王国法典</strong><br>《文集》的出版</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 精神分析内战时间轴数据已移至 timeline-interaction.js -->
+                    <!-- 现在使用统一的弹窗系统 -->
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 弗洛伊德 -->
+                        <div class="thinker-card" data-faction="psychology">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #1E90FF;">西格蒙德·弗洛伊德</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1856-1939 | 奥地利心理学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>无意识理论、性本能（力比多）、人格结构（本我-自我-超我）</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《梦的解析》《精神分析引论》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    精神分析创始人——发现"无意识"本是对理性主义的打击，但仍试图用"科学方法"规范它（如"释梦技术"），尼采或视其为"新的禁欲主义理想"；但其对"理性主体的拆解"，又为后世解构思想埋下伏笔。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 荣格 -->
+                        <div class="thinker-card" data-faction="psychology">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #1E90FF;">卡尔·荣格</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1875-1961 | 瑞士心理学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>集体无意识、原型理论、人格类型（内倾-外倾）</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《心理类型》《集体无意识的原型》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    与弗洛伊德分道扬镳——拒绝"泛性论"，提出"集体无意识"（超越个体的跨文化心理结构），其"原型"概念与尼采的"永恒轮回"有相似的宇宙观，是对"深度心理学"的哲学化拓展。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 拉康 -->
+                        <div class="thinker-card" data-faction="psychology">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #1E90FF;">雅克·拉康</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1901-1981 | 法国精神分析学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>镜像阶段、三界理论（想象界-象征界-实在界）、"自我"的虚幻性</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《文集》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    用结构语言学重构精神分析——彻底解构"理性主体"，认为"自我"是语言符号的产物，其对"主体异化"的分析，与尼采对"基督教-柏拉图主义压制生命"的批判形成跨时代呼应。
+                                </p>
+                            </div>
+                        </div>
+                        
+                          <!-- 戴夫·格罗斯曼 -->
+                        <div class="thinker-card" data-faction="psychology">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #1E90FF;">戴夫·格罗斯曼</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1956- | 美国退役军官、心理学家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>战争心理学、军事研究</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《论杀戮》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    研究战争中的杀戮心理和士兵行为，揭示现代战争对人性的扭曲，主张通过理解暴力心理来减少战争暴行，体现了对人类命运的深切关怀。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- B.F. 斯金纳 -->
+                        <div class="thinker-card" data-faction="psychology">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #1E90FF;">B.F. 斯金纳</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1904-1990 | 美国行为主义心理学代表人物、新行为主义创始人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>操作性条件反射；行为=环境"刺激-强化"结果；否定"心智黑箱"探究；行为主义统摄语言学</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《言语行为》《沃尔登第二》《科学与人类行为》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为行为主义谱系的"激进实践者"，他将华生的古典行为主义推向极致——拒绝任何对"内在心理状态"的假设，认为只需通过"强化程序"（如奖励、惩罚）就能塑造或改变行为。其未出版时便引发争议的《言语行为》，试图证明语言并非先天能力，而是后天通过"强化学习"形成的行为习惯，这一观点虽被乔姆斯基猛烈批判"忽视语言的创造性"，却深刻影响了后世教育心理学、行为矫正等应用领域。他对"心智黑箱"的否定，既是行为主义的理论核心，也成为后来"认知革命"的主要批判靶标，标志着心理学从"行为研究"向"心智探索"转向前的重要阶段。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 乌尔里克·奈塞尔 -->
+                        <div class="thinker-card" data-faction="psychology">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #1E90FF;">乌尔里克·奈塞尔</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1928-2012 | 美国认知心理学家、"认知心理学"学科奠基人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以"心智过程"为研究核心；整合多领域成果构建认知心理学框架；推动"真实情境中的认知"研究</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《认知心理学》《认知与现实》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为认知革命的"官方记录者与学科构建者"，他的核心贡献在于为分散的"反行为主义"研究赋予了统一的学科身份——1967年《认知心理学》的出版，正式宣告心理学研究焦点从"外在行为"转向"内在心智"（如注意、记忆、思维、语言理解），彻底打破行为主义的长期统治。书中并未提出全新理论，而是通过系统梳理与整合，将乔姆斯基对"语言先天结构"的论证、米勒对"信息加工"的探索等成果串联，构建出"认知心理学"的学科轮廓。他后期推动的"生态认知"研究，更是弥补了早期认知心理学"脱离现实情境"的缺陷，为认知科学的跨学科发展奠定了基础，堪称"认知革命"的"学科奠基人"。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 艾伦·纽厄尔 & 赫伯特·西蒙 -->
+                        <div class="thinker-card" data-faction="psychology">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #1E90FF;">艾伦·纽厄尔 & 赫伯特·西蒙</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>纽厄尔：1927-1992；西蒙：1916-2001 | 美国认知科学家、人工智能先驱、认知心理学跨学科推动者</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>"信息加工模型"（认知=信息接收-存储-处理-输出）；机器模拟人类问题解决；认知心理学与AI、计算机科学结盟</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《人类问题解决》（合著）、《计算机与思维》（合著）</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为认知革命与人工智能领域的"跨学科联盟缔造者"，二人的研究彻底打破了心理学与计算机科学的界限——他们首次用"计算机程序"模拟人类解决逻辑问题的过程，证明"心智"并非不可捉摸的"黑箱"，而是可通过"信息加工步骤"拆解与模拟的系统。其"信息加工模型"成为认知心理学的核心范式，让"心智"得以用科学可验证的方式被研究，标志着行为主义"否定心智"的时代终结。凭借在"人类问题解决"与人工智能交叉领域的贡献，二人共同获得图灵奖，其研究不仅奠定了认知科学的跨学科基础，更开启了"用机器理解心智"的研究路径，至今仍影响着人工智能、认知心理学、神经科学等多个领域的发展。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. 俄国文学谱系 -->
+                <section id="russian" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-russian mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #ff7f00;">俄国思想谱系</h2>
+                    </div>
+
+                    <p class="text-gray-600 mb-6 text-sm">
+                        自成体系的思想脉络：从普希金的文学奠基，到列宁的革命理论，俄国知识分子以"文学为武器"，充满对人民的同情、对不公的愤怒，与尼采的"超人哲学"既有交叉（陀思妥耶夫斯基），又有根本背离（集体主义倾向）。
+                    </p>
+
+
+                        <!-- 现代人杂志社时间轴 -->
+                    <div data-faction="russian" class="mb-6 p-6 border border-orange-200 rounded-lg bg-orange-50">
+                        <h3 class="text-lg font-bold text-orange-600 mb-1 text-center">现代人杂志社 · 1836-1866 · 一本杂志，两种命运</h3>
+                        
+                        <!-- 时间轴引言 -->
+                        <p class="text-sm text-gray-700 mb-6">
+                            这不是一本杂志的历史，这是一场俄国灵魂的内战史。战场，就在《现代人》的字里行间。最初，它是一个由普希金奠基的、属于"黄金时代"的文学沙龙；最终，它变成了一台由车尔尼雪夫斯基掌控的、为革命锻造弹药的冰冷机器。这三十年，是同一支笔，把自己写成了两种截然不同的现实。
+                        </p>
+                        
+                        <!-- 时间轴 -->
+                        <div class="relative px-4 py-6">
+                            <!-- 轴中心线 -->
+                            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-orange-500 transform -translate-x-1/2 z-0"></div>
+                            <!-- 水平辅助线 -->
+                            <div class="absolute left-0 right-0 top-3 h-0.5 bg-orange-300 z-0"></div>
+                            
+                            <!-- 时间点容器 -->
+                            <div class="relative z-10 flex justify-between">
+                                <!-- 1836年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1836">
+                                    <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold hover:bg-orange-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        1
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-orange-700" style="height: 80px;">1836<br><strong>贵族的黄金时代</strong><br>普希金的奠基</div>
+                                </div>
+                                
+                                <!-- 1847年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1847">
+                                    <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold hover:bg-orange-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        2
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-orange-700" style="height: 80px;">1847<br><strong>自然派崛起</strong><br>涅克拉索夫接管</div>
+                                </div>
+                                  
+                                <!-- 1855年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1855">
+                                    <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold hover:bg-orange-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        3
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-orange-700" style="height: 80px;">1855<br><strong>激进派夺权</strong><br>车尔尼雪夫斯基政变</div>
+                                </div>
+                                 
+                                <!-- 1856-1860年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1856-1860">
+                                    <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold hover:bg-orange-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        4
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-orange-700" style="height: 90px;">1856-1860<br><strong>美学派出走</strong><br>笔的用途之战</div>
+                                </div>
+                                 
+                                <!-- 1866年 -->
+                                <div class="timeline-item cursor-pointer" data-event="1866">
+                                    <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold hover:bg-orange-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        5
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-orange-700" style="height: 80px;">1866<br><strong>帝国封禁</strong><br>笔杆子的终局</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间轴数据已移至 timeline-interaction.js，使用统一弹窗系统 -->
+                    <!-- 弹窗样式和交互逻辑均通过统一系统实现 -->
+                    
+                    <!-- 思想家卡片网格容器 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 陀思妥耶夫斯基（重复标注，因同时属于先驱与俄国文学谱系） -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-bold" style="color: #ff7f00;">费奥多尔·陀思妥耶夫斯基</h3>
+                                    <span class="faction-tag" style="background-color: rgba(255,127,0,0.1); color: #ff7f00;">核心</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1821-1881 | 俄国小说家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>心理现实主义、自由意志与道德责任</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《罪与罚》《卡拉马佐夫兄弟》《地下室手记》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    俄国文学的灵魂人物，其作品深入探索人类心理和道德困境，融合东正教信仰与对人性黑暗面的洞察，对存在主义产生重要影响，同时是连接俄国文学与西方哲学的桥梁。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 屠格涅夫 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">伊万·屠格涅夫</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1818-1883 | 俄国小说家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>现实主义文学</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《父与子》《猎人笔记》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    陀思妥耶夫斯基的同时代作家，敏锐捕捉俄国社会变革中的"多余人"形象，以客观笔法呈现不同思潮的冲突，但其"温和改良"倾向与革命派形成差异。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 契诃夫 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">安东·契诃夫</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1860-1904 | 俄国小说家、剧作家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>现实主义文学、对小人物的悲悯</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《第六病室》《醋栗》《套中人》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    陀思妥耶夫斯基的同时代作家，以含蓄、客观的笔法描绘俄国社会百态，作品充满对"小人物"的深切同情——这种"同情"正是尼采批判的"奴隶道德"核心，但契诃夫用文学使其成为人性光辉的证明。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 托尔斯泰 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">列夫·托尔斯泰</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1828-1910 | 俄国小说家、思想家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>文学上以批判现实主义揭露社会矛盾，思想上倡导"非暴力抵抗"与基督教人道主义。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《战争与和平》《安娜·卡列尼娜》《复活》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    俄国文学黄金时代代表，作品以恢弘叙事与深刻人性洞察著称，晚年"非暴力"理念影响后世，与尼采"超人哲学"形成对比，是俄国思想中"现实关怀"的核心人物。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 普希金 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">亚历山大·普希金</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1799-1837 | 俄国诗人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>创立现代俄罗斯文学语言</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《叶甫盖尼·奥涅金》《上尉的女儿》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    俄国文坛的"太阳"，以浪漫主义与现实主义结合的笔法奠定俄国文学基础，其对"个体命运"的关注影响了莱蒙托夫、果戈里等后世作家。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 别林斯基 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">维萨里昂·别林斯基</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1811-1848 | 俄国文学评论家、哲学家、革命民主主义思想先驱</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>提出"文学应服务于现实与人民"，反对脱离社会的"纯艺术"；以"现实批评"为武器，批判农奴制与封建专制，主张文学需反映社会矛盾、唤醒民众意识；强调"作家的社会责任"，将文学批评与革命民主主义理想结合，推动文学成为社会变革的思想载体。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《文学的幻想》《论俄国中篇小说和果戈理君的中篇小说》《给果戈理的信》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为俄国革命民主主义文学批评的奠基人，他的核心贡献在于构建了"现实导向的文学批评体系"——既深入剖析普希金、果戈理等作家作品中的社会内涵，又借文学评论传递反农奴制、求自由的革命主张，打破了当时俄国文学脱离现实的贵族化倾向。其思想不仅影响了屠格涅夫、托尔斯泰等后世作家的创作方向，更成为19世纪俄国平民知识分子反抗封建压迫的精神旗帜，为俄国社会变革提供了重要的思想动力。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 莱蒙托夫 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">米哈伊尔·莱蒙托夫</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1814-1841 | 俄国诗人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>浪漫主义诗歌、社会批判</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《当代英雄》《恶魔》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    继普希金之后的重要浪漫主义作家，作品充满对社会现实的批判和对自由的渴望，其塑造的"多余人"形象成为俄国文学的经典原型。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 果戈里 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">尼古莱·果戈里</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1809-1852 | 俄国小说家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>批判现实主义与讽刺文学</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《死魂灵》《钦差大臣》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    以"怪诞讽刺"揭露俄国社会的虚伪与腐朽，其批判精神影响陀思妥耶夫斯基，但作品底色是对"小人物"的悲悯，与尼采"蔑视群氓"的态度形成对比。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 涅克拉索夫 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">尼古拉·涅克拉索夫</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1821-1877 | 俄国诗人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>革命民主主义诗歌</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《谁在俄罗斯能过好日子》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    俄国革命民主主义诗人，其作品反映农民的苦难和社会不公，语言通俗，充满对人民的同情，是"平民知识分子"的代表。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 杜勃罗留波夫 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">尼古拉·杜勃罗留波夫</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1836-1861 | 俄国文学批评家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>文学批评、革命民主主义</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《黑暗王国中的一线光明》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    革命民主主义文学批评的代表人物，主张文学应服务于社会革命，关注人民的命运，对俄国现实主义文学的发展有重要影响。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 车尔尼雪夫斯基 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">尼古拉·加夫里洛维奇·车尔尼雪夫斯基</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1828-1889 | 俄国革命民主主义者、哲学家、文学批评家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以唯物主义哲学为基础，倡导"美是生活"的美学观，主张文学应服务于社会革命与民众解放，批判农奴制与专制制度。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《艺术与现实的审美关系》《怎么办？》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    属俄国文学与思想谱系中"革命启蒙"的关键人物，其小说《怎么办？》以"新人"形象描绘社会主义理想，成为19世纪俄国革命青年的精神教科书。他将美学与社会批判结合，认为"美即符合生活本质的存在"，既影响了托尔斯泰的现实主义创作，也为俄国革命思潮提供了理论支撑，其对"实践改造现实"的强调，与后来的社会主义思想形成呼应。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 萨尔蒂科夫-谢德林 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">米哈伊尔·叶夫格拉福维奇·萨尔蒂科夫-谢德林</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1826-1889 | 俄国讽刺作家、政论家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以尖锐讽刺揭露沙皇专制与官僚体系的腐朽，批判农奴制改革后的社会虚伪，主张通过思想启蒙推动社会变革。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《外省散记》《戈洛夫廖夫老爷们》《童话集》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为俄国文学中"讽刺现实主义"的巨匠（1858-1866年为其创作高峰期），他以《外省散记》撕开地方官僚的虚伪面具，用《戈洛夫廖夫老爷们》刻画贵族阶级的精神堕落。其讽刺不仅指向制度表层，更深入国民性的痼疾，与果戈理一脉相承却更具革命锋芒。他的作品既是对现实的无情批判，也是对民众觉醒的呼唤，成为俄国社会变革的"文学手术刀"，与车尔尼雪夫斯基共同构成19世纪俄国革命民主主义文学的双璧。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 列宁 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">弗拉基米尔·列宁</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1870-1924 | 俄国革命家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>帝国主义论、无产阶级革命与专政</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《国家与革命》《怎么办？》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    俄国革命思想的集大成者，继承杜勃罗留波夫等"革命民主主义者"的思想，主张通过暴力革命改变社会。尼采会彻底反对其集体主义、平等主义倾向，视之为"奴隶道德的胜利"。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 赫尔岑 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">亚历山大·赫尔岑</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1812-1870 | 俄国思想家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>革命民主主义、哲学</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《往事与随想》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    俄国革命思想的先驱，主张废除农奴制，建立民主社会，其思想融合了西方自由主义与俄国民粹主义，对后来的革命者有深远影响。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 皮萨列夫 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">德米特里·皮萨列夫</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1840-1868 | 俄国文学批评家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>文学批评、实证主义</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《现实主义者》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    革命民主主义文学批评家，主张实证主义和功利主义，强调文学的社会功能，对俄国19世纪后期的思想发展有重要影响。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 巴枯宁 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">米哈伊尔·巴枯宁</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1814-1876 | 俄国无政府主义理论家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>集体无政府主义、反基督教</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《上帝与国家》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    与尼采的共鸣：激烈反对国家、教会权威；分歧：巴枯宁认为"互助、同情是人类内在良知"，只需打破外在压迫即可显现——这是"性善论"无政府主义与尼采"权力意志"的根本冲突。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 克鲁泡特金 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">彼得·克鲁泡特金</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1842-1921 | 俄国无政府主义理论家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>无政府共产主义、互助论</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《互助论》《征服面包》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    提出"互助论"，认为"互助"是生物进化与人类社会的重要动力，与达尔文"物竞天择"形成补充。他同样相信人类的"同情本能"，与尼采的"弱肉强食"权力观形成鲜明对比。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 瓦西里·格罗斯曼 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">瓦西里·格罗斯曼</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1905-1964 | 苏联作家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>现实主义小说、战争文学</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《生活与命运》《斯大林格勒》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    以描写二战的作品和对苏联社会的批判闻名，其巨著《生活与命运》被称为"20世纪的《战争与和平》"，通过对个体命运的关注，展现了极权体制下人性的光辉与挣扎。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 曼德尔施塔姆 -->
+                        <div class="thinker-card" data-faction="russian">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #ff7f00;">奥西普·曼德尔施塔姆</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1891-1938 | 俄罗斯诗人、散文家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>诗歌形式严谨、对历史文明的缅怀、对道德的坚守</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《石头》《时代的喧嚣》《我们生活着，却飘忽无国》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    阿克梅派重要诗人，反对象征主义的神秘晦涩，回归古典诗歌的形式美与秩序感，借诗歌追溯俄罗斯及世界文明的兴衰。其创作饱含对社会现实的关切，如《我们生活着，却飘忽无国》以犀利笔触批判斯大林的独裁统治，展现知识分子在高压时代的抗争。
+                                </p>
+                            </div>
+                        </div>
+                    
+                    </div> <!-- 关闭思想家卡片网格容器 -->
+                    </section>
+
+                <!-- 6. 同情与现实的捍卫者 -->
+                <section id="sympathy" class="mb-10 scroll-mt-24">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-block w-4 h-4 rounded-full bg-sympathy mr-2"></span>
+                        <h2 class="text-xl font-bold" style="color: #a65628;">同情与现实的捍卫者</h2>
+                    </div>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        站在尼采思想反面的思想家与作家——他们或许也批判社会虚伪，但核心价值观是"深切的同情心"与"对现实的关怀"，是尼采所批判的"奴隶道德"在文学与思想上的光辉体现。
+                    </p>
+                    
+                    <!-- 非暴力互怼时间轴 -->
+                    <div class="mb-6 p-6 border border-amber-200 rounded-lg bg-amber-50">
+                        <h3 class="text-lg font-bold text-amber-600 mb-1 text-center">非暴力互怼 · 1945-1962 · 和平也能吵上头条</h3>
+                        
+                        <!-- 引言 -->
+                        <div class="text-sm text-gray-700 mb-4">
+                            <p>二战的硝烟刚刚散尽，三位并肩反抗法西斯的左翼巨人，站在欧洲的废墟之上，却对"如何避免下一次灾难"产生了无法调和的分歧。这不是敌我之争，而是最痛苦的"内部论战"。战场的核心是：面对新的极权（苏联）和核威慑，一个正直的知识分子，其道德底线究竟应该划在哪里？</p>
+                        </div>
+                        
+                        <!-- 时间轴 -->
+                        <div class="relative px-4 py-6">
+                            <!-- 轴中心线 -->
+                            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-amber-500 transform -translate-x-1/2 z-0"></div>
+                            <!-- 水平辅助线 -->
+                            <div class="absolute left-0 right-0 top-3 h-0.5 bg-amber-300 z-0"></div>
+                            
+                            <!-- 时间点容器 -->
+                            <div class="relative z-10 flex justify-between">
+                                <!-- 1945-1946 -->
+                                <div class="timeline-item cursor-pointer" data-person="camus-orwell">
+                                    <div class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold hover:bg-amber-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        1
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-amber-700" style="height: 100px;">1945-1946<br><strong>盟友的起点</strong><br>加缪 vs 奥威尔</div>
+                                </div>
+                                
+                                <!-- 1951 -->
+                                <div class="timeline-item cursor-pointer" data-person="camus-albert">
+                                    <div class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold hover:bg-amber-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        2
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-amber-700" style="height: 100px;">1951<br><strong>原则的绝对化</strong><br>阿尔贝·加缪</div>
+                                </div>
+                                
+                                <!-- 1955 -->
+                                <div class="timeline-item cursor-pointer" data-person="russell">
+                                    <div class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold hover:bg-amber-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        3
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-amber-700" style="height: 100px;">1955<br><strong>威胁的优先排序</strong><br>伯特兰·罗素</div>
+                                </div>
+                                
+                                <!-- 1958-1962 -->
+                                <div class="timeline-item cursor-pointer" data-person="tripartite-split">
+                                    <div class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold hover:bg-amber-600 transition-colors" style="margin-left: 100%; transform: translateX(-50%);">
+                                        4
+                                    </div>
+                                    <div class="text-center mt-2 font-medium text-amber-700" style="height: 100px;">1958-1962<br><strong>路线的决裂</strong><br>三方思想分野</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 详情显示区域 -->
+                        <div id="timeline-detail" class="mt-6 hidden">
+                            <!-- 详情内容将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 鲁迅 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">鲁迅（周树人）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1881-1936 | 中国现代文学奠基人、思想家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以文学为"精神手术刀"，批判国民性痼疾；倡导"拿来主义"，主张在现实关切中探寻思想出路；以"哀其不幸，怒其不争"的悲悯，捍卫个体尊严与社会觉醒的可能。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《呐喊》《彷徨》《朝花夕拾》《野草》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    受尼采"超人哲学"启发，早期在《文化偏至论》中呼唤"精神界之战士"，借个体觉醒打破蒙昧，却摒弃尼采精英主义，转向对底层大众的深切共情；共鸣陀思妥耶夫斯基对"灵魂深度"的挖掘，如《狂人日记》对人性困境的剖白，却拒绝宗教救赎路径，坚持以现实批判唤醒社会；属"同情与现实的捍卫者"核心谱系：以文字为武器，既饱含对底层苦难的同情，又直面国民性与社会痼疾，在唤醒个体意识与推动现实变革间，构建了独特的思想与文学坐标。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 萧红 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">萧红（张迺莹）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1911-1942 | 中国现代作家、"民国四大才女"之一</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以文学书写底层民众（尤其女性）的生存苦难，拒绝美化苦难或简化现实；用细腻笔触还原战乱与封建压迫下"人的真实处境"，捍卫边缘群体的生命尊严与存在价值；反对文学的"宏大叙事"，聚焦个体在时代洪流中的挣扎与微光，传递对弱小者的深切同情。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《生死场》《呼兰河传》《马伯乐》</p>
+                                    <p class="text-sm italic">"人生为了什么，才有这样凄凉的夜？"（《呼兰河传》）</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为"同情与现实的捍卫者"谱系中独特的"苦难书写者"，她的作品从未脱离对"真实人间"的凝视——《生死场》以东北农村女性的生育与死亡，揭露封建礼教与战乱对生命的碾压；《呼兰河传》借故乡小人物的悲欢，将对底层的同情藏进质朴的文字里。她不依赖激烈的批判，却以"看见并记录苦难"的坚守，让边缘者的生命被看见、被尊重，成为现代文学中以"温柔笔触捍卫现实温度"的重要存在。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 老舍 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">老舍（舒庆春）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1899-1966 | 中国现代作家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以京味语言写市民生活，借小人物命运折射社会百态，藏悲悯于幽默。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《骆驼祥子》《茶馆》《四世同堂》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    聚焦旧中国底层生存困境，《骆驼祥子》写人力车夫的奋斗与沉沦，《茶馆》映社会变迁中的众生相，既含对民众苦难的同情，也批判时代局限，是"同情与现实的捍卫者"谱系中，具中国本土特质的文学代表。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 略萨 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">马里奥·巴尔加斯·略萨</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1936- | 秘鲁-西班牙作家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>文学现实主义、介入社会现实</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《公羊的节日》《城市与狗》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    诺贝尔文学奖得主，小说深刻介入拉丁美洲的政治暴力与社会不公，以"同情"为基石批判独裁与压迫，证明"关注现实"与"文学深度"可并行不悖。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 洛尔迦 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">费德里科·加西亚·洛尔迦</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1898-1936 | 西班牙诗人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>深切的同情、激情与死亡命运洞察</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《吉普赛谣曲》《血婚》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    受基督教影响，作品深植于安达卢西亚民间传统，以诗意笔法呈现边缘群体的苦难，其"同情"并非软弱，而是对生命尊严的捍卫，与尼采的"主人道德"形成价值观对立。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 艾捷尔·丽莲·伏尼契 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">艾捷尔·丽莲·伏尼契</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1864-1960 | 英国女作家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以小说融合革命理想与宗教批判，刻画个体在信仰与抗争中的精神蜕变</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《牛虻》《中断的友谊》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    《牛虻》以意大利民族解放运动为背景，借主角从信教到决裂教会、投身革命的经历，既批判基督教教会伪善（呼应尼采对基督教的批判），又彰显对苦难民众的同情与革命理想的坚守，贴合 "同情与现实的捍卫者" 对现实苦难的回应，也与革命、宗教相关谱系形成思想交叉。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 约瑟夫·康拉德 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">约瑟夫·康拉德</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1857-1924 | 英国小说家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以航海叙事揭露殖民暴力与人性异化，借文学叩问文明与野蛮的边界</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《黑暗之心》《吉姆爷》《水仙号上的黑水手》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    凭航海经历为创作底色，《黑暗之心》直指帝国主义殖民掠夺的残酷本质，既批判文明伪装下的暴力（与尼采对 "虚伪道德" 的批判呼应），又饱含对殖民地民众苦难的同情，是 "同情与现实的捍卫者" 派系中，以冷峻叙事反思现实的重要作家。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 乔治・奥威尔 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">乔治・奥威尔（George Orwell）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1903-1950 | 英国作家、记者、左翼批评家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以 "语言清晰度" 对抗极权（批判 "语言腐败即政治腐败"）；反对法西斯与斯大林主义等一切极权形式，主张民主社会主义；用 "老大哥""双重思想" 等概念，将体制恐怖转化为可感知的日常隐喻。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《一九八四》《动物农场》《政治与英语》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为 "同情与现实的捍卫者" 谱系的 "现实寓言构建者"，他将 "反极权" 主题写成通俗且极具传播力的寓言，为 20 世纪左翼提供了自我批判的镜鉴。正如他所言："如果思想能腐蚀语言，语言也能腐蚀思想。" 其对 "语言 - 权力" 关系的诊断，被后世结构主义、传媒研究直接借鉴，成为该谱系中以文学力量锚定现实批判的重要支桩。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 伯特兰・罗素 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">伯特兰・罗素（Bertrand Russell）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1872-1970 | 英国哲学家、数学家、逻辑学家、和平活动家</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以逻辑分析拆解形而上学迷障；以经验主义与和平主义对抗国家狂热及核军备，倡导 "零核世界"；提出 "描述语理论"，为语言哲学奠定基础。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《数学原理》（与怀特海合著）、《西方哲学史》《为什么我不是基督徒》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为 "同情与现实的捍卫者" 谱系的 "理性支点"，他将 "反战 - 反核" 转化为可实证的公共议程，用逻辑武器拆穿神学与极权思想的论证漏洞，为世俗人文主义提供硬核工具。他曾尖锐指出："第一种暴政是意见的暴政；第二种是武器的暴政；两种我都要反对。" 其 "和平主义实证" 路线，与加缪、奥威尔构成 "非暴力批判" 三角，成为该谱系中以理性锚定现实关怀的关键存在。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 伊藤计划 -->
+                        <div class="thinker-card" data-faction="sympathy">
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold" style="color: #a65628;">伊藤计划（Project Itoh）</h3>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1974-2009 | 日本科幻作家、"现实与人性的科幻捍卫者"</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>以科幻揭露技术与权力对人性的异化；融合哲学思辨与政治惊悚，探索 "生命权力""语言暴力" 下的生存困境；捍卫技术时代的 "真实人性" 与 "个体意志"。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《虐杀器官》《和谐》《尸者的帝国》（与圆城塔合著，基于其遗稿续写）</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    作为 "同情与现实的捍卫者"，他的科幻创作始终锚定 "技术与人性的关系"—— 借《虐杀器官》"语言即暴力" 呼应萨丕尔 - 沃尔夫假说，用《和谐》"健康乌托邦" 解构福柯 "生命权力"，既批判技术异化与虚无焦虑，又坚守对 "真实人性" 的同情与捍卫，以硬核科幻包裹现实关怀，成为技术时代 "人性捍卫" 的重要发声者。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+
+
+                <!-- 移动端核心思想对比卡片 -->
+                <div class="lg:hidden bg-gray-50 rounded-lg p-4 border border-gray-200 mt-8">
+                    <h3 class="font-bold text-sm text-gray-700 mb-3">尼采核心批判靶心</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <span class="inline-block w-2 h-2 rounded-full bg-nietzsche mt-2 mr-2"></span>
+                            <span>反对基督教-柏拉图主义：否定"天国/理念界"的虚构</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-block w-2 h-2 rounded-full bg-nietzsche mt-2 mr-2"></span>
+                            <span>反对理性霸权：批判苏格拉底以来对生命本能的压抑</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-block w-2 h-2 rounded-full bg-nietzsche mt-2 mr-2"></span>
+                            <span>重估价值：否定"同情/谦卑"的奴隶道德</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-block w-2 h-2 rounded-full bg-nietzsche mt-2 mr-2"></span>
+                            <span>克服虚无：以权力意志成为"超人"</span>
+                        </li>
+                    </ul>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-200 py-6 mt-10">
+        <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>文史哲思想家谱系Wiki | 基于尼采思想核心梳理，共收录<span id="thinkerCount">47</span>位思想家</p>
+            <p class="mt-2">© 2025 思想家谱系项目 | 设计：适配手机/电脑端，按派系分类呈现</p>
+        </div>
+    </footer>
+
+    <!-- 派系筛选功能脚本 -->
+    <script>
+        // 派系颜色映射
+        const groupColors = {
+            0: "#e41a1c", // 尼采及核心继承者
+            1: "#377eb8", // 先驱与同路人
+            2: "#4daf4a", // 基督教谱系
+            3: "#984ea3", // 理性主义谱系（仅保留苏格拉底、柏拉图、黑格尔）
+            4: "#ff7f00", // 俄国文学谱系
+            5: "#a65628", // 同情与现实的捍卫者
+            6: "#1E90FF", // 深度心理学谱系（弗洛伊德、荣格、拉康）
+            7: "#9370DB", // 语言学谱系（萨丕尔-沃尔夫、哈雷尔等）
+            8: "#4B0082"  // 存在主义谱系（此前新增的，保留）
+        };
+        
+        // 派系名称映射
+        const groupNames = {
+            0: "尼采及核心继承者",
+            1: "先驱与同路人",
+            2: "基督教谱系",
+            3: "理性主义谱系",
+            4: "俄国文学谱系",
+            5: "同情与现实的捍卫者",
+            6: "深度心理学谱系",
+            7: "语言学谱系",
+            8: "存在主义谱系"
+        };
+        // 1. 导航激活状态切换
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // 移除所有激活状态
+                navItems.forEach(nav => nav.classList.remove('active'));
+                // 添加当前激活状态
+                this.classList.add('active');
+                // 阻止默认跳转
+                e.preventDefault();
+                // 触发派系筛选
+                const faction = this.getAttribute('data-faction');
+                filterThinkers(faction);
+                // 移动端选择同步
+                document.getElementById('mobile-faction-select').value = faction;
+                // 滚动到对应派系区域（非"全部"时）
+                if (faction !== 'all') {
+                    document.getElementById(faction).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    // "全部"时滚动到顶部
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 2. 移动端下拉选择筛选
+        document.getElementById('mobile-faction-select').addEventListener('change', function() {
+            const faction = this.value;
+            filterThinkers(faction);
+            // 同步桌面端导航激活状态
+            navItems.forEach(item => {
+                if (item.getAttribute('data-faction') === faction) {
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                }
+            });
+            // 滚动到对应派系区域（非"全部"时）
+            if (faction !== 'all') {
+                document.getElementById(faction).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                // "全部"时滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // 3. 派系筛选核心函数
+        function filterThinkers(faction) {
+            const allCards = document.querySelectorAll('.thinker-card');
+            allCards.forEach(card => {
+                if (faction === 'all' || card.getAttribute('data-faction') === faction) {
+                    // 显示匹配的卡片
+                    card.style.display = 'block';
+                } else {
+                    // 隐藏不匹配的卡片
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // 4. 滚动指示器功能
+        const sections = document.querySelectorAll('section[id]');
+        const scrollIndicators = document.querySelectorAll('.scroll-indicator-item');
+        
+        function highlightScrollIndicator() {
+            let scrollPosition = window.scrollY + 200;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    scrollIndicators.forEach(indicator => {
+                        indicator.classList.remove('active');
+                        if (indicator.getAttribute('data-target') === sectionId) {
+                            indicator.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+        
+        // 点击滚动指示器跳转到对应区域
+        scrollIndicators.forEach(indicator => {
+            indicator.addEventListener('click', () => {
+                const targetId = indicator.getAttribute('data-target');
+                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // 更新导航状态
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-faction') === targetId) {
+                        item.classList.add('active');
+                        document.getElementById('mobile-faction-select').value = targetId;
+                    }
+                });
+            });
+        });
+        
+        // 监听滚动事件更新指示器
+        window.addEventListener('scroll', highlightScrollIndicator);
+
+        // 5. 初始加载显示全部派系
+        window.addEventListener('load', function() {
+            filterThinkers('all');
+            highlightScrollIndicator();
+            // 初始加载时更新思想家计数
+            updateThinkerCount();
+        });
+
+        // 6. 更新思想家数量统计
+        function updateThinkerCount() {
+            const thinkerCountElement = document.getElementById('thinkerCount');
+            const totalThinkers = document.querySelectorAll('.thinker-card').length;
+            thinkerCountElement.textContent = totalThinkers;
+        }
+
+        // 在筛选派系后也更新思想家计数
+        const originalFilterThinkers = filterThinkers;
+        filterThinkers = function(faction) {
+            originalFilterThinkers(faction);
+            updateThinkerCount();
+        };
+        
+        // 时间轴展开/收起功能
+        function toggleTimelineItem(element) {
+            const timelineItem = element.closest('.timeline-item');
+            const content = timelineItem.querySelector('.timeline-content');
+            const icon = element.querySelector('i');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.remove('fa-plus');
+                icon.classList.add('fa-minus');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('fa-minus');
+                icon.classList.add('fa-plus');
+            }
+        }
+    </script>
+    
+    <!-- 时间轴交互脚本 -->
+    <script src="timeline-interaction.js"></script>
+</body>
+</html>
