@@ -80,6 +80,53 @@
             background-color: rgba(0, 0, 0, 0.08);
             font-weight: 600;
         }
+        
+        /* 角标样式 - 改为圆角矩形 */
+        .faction-tag {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 9999px; /* 圆角矩形 */
+            white-space: nowrap;
+        }
+        
+        /* 快速定位指示器样式 */
+        .scroll-indicator {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        
+        .scroll-indicator-item {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+            border: 2px solid transparent;
+        }
+        
+        .scroll-indicator-item:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        
+        .scroll-indicator-item.active {
+            opacity: 1;
+            transform: scale(1.2);
+            border-color: currentColor;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
@@ -384,17 +431,45 @@
                         在尼采之前或同时代，提出相似批判视角的思想家——他们或揭示世界的"残酷本质"，或挑战理性霸权，但结论与尼采存在差异，成为尼采思想的重要源头。
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 埃斯库罗斯 -->
+                        <div class="thinker-card" data-faction="pioneer">
+                            <div class="p-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-bold" style="color: #377eb8;">埃斯库罗斯</h3>
+                                    <span class="faction-tag" style="background-color: rgba(55,126,184,0.1); color: #377eb8;">源初的悲怆 <span class="text-xs opacity-80">(The Primal Pathos)</span></span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>约前525-前456 | 古希腊悲剧诗人</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><strong>核心主张：</strong>希腊悲剧精神的奠基人</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《俄瑞斯忒亚》（《阿伽门农》《奠酒人》《复仇女神》）、《被缚的普罗米修斯》</p>
+                                </div>
+                                <p class="text-sm text-gray-700">
+                                    "命运投下诅咒，英雄以血为墨——悲剧由此诞生。"
+                                    <br><br>首创 "三联剧" 结构，确立悲剧基本范式；将合唱队深度融入剧情，使其成为承载哲学思考与命运氛围的核心载体。
+                                    <br><br>以作品叩问 "命运（Moira）- 神律（Dike）" 与人类意志的边界，探索人类在既定宿命下的抉择价值与责任归属。
+                                    <br><br>在《俄瑞斯忒亚》三部曲中，借家族复仇循环到城邦理性审判的转变，艺术化呈现 "从血亲私刑到城邦正义" 的文明进阶，揭露伦理困境与进步逻辑。
+                                    <br><br>他是酒神-日神合一的原始范本——舞台即酒神冲动披上日神形象；他是前苏格拉底"健康希腊"典范——尼采用以对抗理性至上；他是强者悲观主义的原型——不回避残酷，而以艺术赋予痛苦意义，直通尼采"肯定生命"核心。
+                                </p>
+                            </div>
+                        </div>
+
                         <!-- 叔本华 -->
                         <div class="thinker-card" data-faction="pioneer">
                             <div class="p-4">
-                                <h3 class="text-lg font-bold" style="color: #377eb8;">阿图尔·叔本华</h3>
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-bold" style="color: #377eb8;">阿图尔·叔本华</h3>
+                                    <span class="faction-tag" style="background-color: rgba(55,126,184,0.1); color: #377eb8;">意志的解剖者 <span class="text-xs opacity-80">(The Anatomist of Will)</span></span>
+                                </div>
                                 <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1788-1860 | 德国哲学家</p>
                                 <div class="space-y-2 mb-4">
-                                    <p class="text-sm"><strong>核心主张：</strong>作为"意志"的世界、生命意志的否定</p>
-                                    <p class="text-sm"><strong>代表作：</strong>《作为意志和表象的世界》</p>
+                                    <p class="text-sm"><strong>核心主张：</strong>世界是盲目的"意志"客体化出的"表象"；生命是永不满足的欲望和随之而来的痛苦，故"生命意志"是罪恶的，应予否定。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《作为意志和表象的世界》、《附录与补遗》</p>
                                 </div>
                                 <p class="text-sm text-gray-700">
-                                    尼采最直接的精神导师与对手：叔本华看到世界的"残酷"本质，但主张"否定生命意志"以摆脱痛苦；尼采则将"意志"转化为"权力意志"，主张积极肯定生命。
+                                    "世界是我的表象"，但更深层的是驱策万物的、永动且痛苦的盲目"生命意志"。他是第一个将哲学之刃切入"生命核心之痛"的现代思想家。
+                                    <br><br>其哲学并非建构体系，而是进行一场冷酷的"诊断"：艺术（尤其是音乐）带来短暂救赎，但唯有通过禁欲、否定意志，才能抵达最终的寂灭与解脱（类似于佛教的涅槃）。
+                                    <br><br>他为尼采铺平了道路，提供了"意志"作为世界本原的关键概念，却得出了截然相反的结论：尼采接过他的锤子，却用它来肯定生命，而非砸碎它。
+                                    <br><br>他是尼采的"逆缘导师"——其悲观的绝对性，成为尼采必须全力对抗才能诞生的"重力"；他的体系，是尼采思想得以起飞的、最黑暗也最必要的跑道。
                                 </p>
                             </div>
                         </div>
@@ -402,14 +477,32 @@
                         <!-- 陀思妥耶夫斯基 -->
                         <div class="thinker-card" data-faction="pioneer">
                             <div class="p-4">
-                                <h3 class="text-lg font-bold" style="color: #377eb8;">费奥多尔·陀思妥耶夫斯基</h3>
-                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1821-1881 | 俄国小说家</p>
+                                <div class="flex items-center justify-between mb-1">
+                                    <h3 class="text-lg font-bold" style="color: #377eb8;">费奥多尔·陀思妥耶夫斯基</h3>
+                                    <span class="faction-tag" style="background-color: rgba(55,126,184,0.1); color: #377eb8;">深渊的测绘者</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1821-1881 | 俄国小说家、思想家</p>
                                 <div class="space-y-2 mb-4">
-                                    <p class="text-sm"><strong>核心主张：</strong>探索上帝、自由意志、善恶与疯狂</p>
-                                    <p class="text-sm"><strong>代表作：</strong>《罪与罚》《卡拉马佐夫兄弟》《地下室手记》</p>
+                                    <p class="text-sm"><strong>核心主张：</strong>以小说为实验室，深度勘探"上帝死后"人类心灵的深渊；揭示绝对自由的重负、理性主义的疯狂，以及善恶之间模糊而痛苦的边界。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《罪与罚》、《卡拉马佐夫兄弟》、《地下室手记》、《群魔》</p>
                                 </div>
                                 <p class="text-sm text-gray-700">
-                                    尼采盛赞的"唯一能教我点什么的心理学家"，通过小说深刻揭示"上帝死后"的人类心理：理性走向疯狂（《地下室手记》）、虚无主义催生暴力（《群魔》），但其"超人"理念（拉斯柯尔尼科夫）充满东正教负罪感，与尼采截然不同。
+                                    他是尼采唯一承认的"心理学家"，因其早于尼采精准预言了价值虚无时代的心理后果。他的作品是一场持续的思想实验：
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    在《地下室手记》中，他展示了理性如何走向自我囚禁的悖论。
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    在《罪与罚》中，他让"超人理论"（"不平凡的人有权逾越道德"）与东正教式的负罪感猛烈碰撞，最终证明纯粹的理论在鲜活的生命面前必然崩溃。
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    在《群魔》中，他描绘了虚无主义如何催生政治上的恶魔，成为一部恐怖的预言。
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    在《卡拉马佐夫兄弟》中，他通过伊万·卡拉马佐夫提出了对神义论最尖锐的指控（"孩子们的眼泪"），将信仰置于最残酷的考验之下。
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    他并非提供答案，而是将现代性的核心困境戏剧化。尼采从他那里看到了问题，却得出了截然不同的解决方案：陀氏指向了基督式的救赎，而尼采则呼唤超越善恶的"超人"。正是这种根本性的分歧，使得他们的思想对话成为现代哲学史上最富张力的一页。
                                 </p>
                             </div>
                         </div>
@@ -417,14 +510,23 @@
                         <!-- 布莱克 -->
                         <div class="thinker-card" data-faction="pioneer">
                             <div class="p-4">
-                                <h3 class="text-lg font-bold" style="color: #377eb8;">威廉·布莱克</h3>
-                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1757-1827 | 英国诗人</p>
+                                <div class="flex items-center justify-between mb-1">
+                                    <h3 class="text-lg font-bold" style="color: #377eb8;">威廉·布莱克 (William Blake)</h3>
+                                    <span class="faction-tag" style="background-color: rgba(55,126,184,0.1); color: #377eb8;">炽烈的先知 <span class="text-xs opacity-80">(The Fiery Prophet)</span></span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1757-1827 | 英国诗人、版画家、神秘主义者</p>
                                 <div class="space-y-2 mb-4">
-                                    <p class="text-sm"><strong>核心主张：</strong>反对理性霸权、强调想象力</p>
-                                    <p class="text-sm"><strong>代表作：</strong>《天真与经验之歌》《天堂与地狱的婚姻》</p>
+                                    <p class="text-sm"><strong>核心主张：</strong>以"能量"（Energy）对抗"理性暴政"；以充满创造力的"想象"取代僵死的教条。衡量存在的唯一标准是"行动"：有为即善（促进生命），无为即恶（压抑生命）。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《天真与经验之歌》、《天堂与地狱的婚姻》、《四佐亚》</p>
                                 </div>
                                 <p class="text-sm text-gray-700">
-                                    尼采的先行者，攻击"单一视角"的理性与僵化宗教教条，推崇充满生命力的"能量"，其"天堂与地狱的婚姻"思想与尼采"超越善与恶"有神合之处。
+                                    他是尼采真正的精神先驱，早于尼采半个世纪发出了对理性霸权（他称之为"单一视野"）和体制化宗教的猛烈攻击。他创造了个人神话体系，在其中，代表规训与压迫的"由理生"（Urizen）与代表生命本能与创造力的"奥克"（Orc）进行着永恒斗争。
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    他宣称"行动是至善，抑制行动即是恶"，将充沛的、创造性的生命能量视为宇宙的最高法则。其"天堂与地狱的婚姻"思想，旨在超越善与恶的僵化对立，达成一种更高层面的生命肯定，与尼采的"超人"哲学神形相合。
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    他并非单纯的诗人，而是一位用诗歌和版画作为武器的哲学家，用想象的锤子砸碎一切禁锢生命力的偶像。
                                 </p>
                             </div>
                         </div>
@@ -476,14 +578,23 @@
                         <!-- 安托南·阿尔托 -->
                         <div class="thinker-card" data-faction="pioneer">
                             <div class="p-4">
-                                <h3 class="text-lg font-bold" style="color: #377eb8;">安托南・阿尔托</h3>
-                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1896-1948 | 法国戏剧理论家</p>
+                                <div class="flex items-center justify-between mb-1">
+                                    <h3 class="text-lg font-bold" style="color: #377eb8;">安托南·阿尔托 (Antonin Artaud)</h3>
+                                    <span class="faction-tag" style="background-color: rgba(55,126,184,0.1); color: #377eb8;">残酷戏剧的酒神</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3"><i class="fa fa-calendar-o mr-1"></i>1896-1948 | 法国戏剧理论家、诗人、演员</p>
                                 <div class="space-y-2 mb-4">
-                                    <p class="text-sm"><strong>核心主张：</strong>提出 "残酷戏剧" 理论，以剧场为载体反抗西方理性霸权对人性的规训，主张用感官冲击打破艺术与生活的界限</p>
-                                    <p class="text-sm"><strong>代表作：</strong>《戏剧及其重影》</p>
+                                    <p class="text-sm"><strong>核心主张：</strong>创立"残酷戏剧"(Theatre of Cruelty)理论，主张戏剧应如瘟疫，以最直接的声音、姿态与影像冲击感官，摧毁理性的桎梏，解放被压抑的生命本能，从而带来一种近乎形而上的、彻底的净化。</p>
+                                    <p class="text-sm"><strong>代表作：</strong>《戏剧及其重影》、《对诗歌的反叛》</p>
                                 </div>
                                 <p class="text-sm text-gray-700">
-                                    其 "残酷戏剧" 并非对某一特定思想谱系的直接继承，而是与尼采 "酒神精神" 形成跨时空的 "同路呼应"—— 二者均反对理性对生命本能的压制，阿尔托将这种反抗落地为剧场实践：通过破除舞台与观众的 "安全距离"，用肢体、声音、视觉的极致冲击，迫使观众直面生命本真的残酷与混沌，这种对 "理性霸权" 的批判路径，与尼采对传统形而上学的解构方向一致，但更聚焦于艺术场域的变革，故归为 "同路人"。
+                                    他是尼采"酒神精神"在二十世纪艺术领域最极端的实践者与继承者。尼采在哲学中呼唤的、用以对抗苏格拉底理性主义的悲剧力量，被阿尔托在剧场中具象化为一场感官的暴动。
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    他的"残酷"并非指向暴行，而是指存在的必要性、生命的贪婪以及直面真相的严酷。他要求破除舞台幻觉，让戏剧不再是生活的摹仿，而成为一场直接灼伤灵魂的仪式，迫使观众体验"上帝已死"后世界的混沌与原始能量。
+                                </p>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    在此意义上，他的剧场是一种哲学工具，其目标与尼采完全一致：用艺术对抗虚无，以生命的全部强度（包括其黑暗与痛苦）来肯定生命本身。
                                 </p>
                             </div>
                         </div>
