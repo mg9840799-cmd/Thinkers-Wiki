@@ -92,20 +92,20 @@
         
         /* 快速定位指示器样式 */
         .scroll-indicator {
-            position: fixed !important;
-            top: 50% !important;
-            right: 2rem !important;
-            transform: translateY(-50%) !important;
-            z-index: 100 !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 30px !important;
-            padding: 15px !important;
-            background-color: white !important;
-            border-radius: 0.5rem !important;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
-            width: 40px !important;
-            align-items: center !important;
+            position: fixed;
+            top: 20%;
+            right: 0;
+            transform: translateY(0);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 15px 5px 15px 15px;
+            background-color: white;
+            border-radius: 0.5rem 0 0 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            width: 30px;
+            align-items: center;
+            height: auto;
         }
         
         .scroll-indicator-item {
@@ -116,6 +116,7 @@
             transition: all 0.2s ease;
             opacity: 0.7;
             border: 2px solid transparent;
+            margin: 25px 0;
         }
         
         .scroll-indicator-item:hover {
@@ -271,7 +272,7 @@
                         </li>
                         <li>
                             <a href="#russian" class="nav-item" data-faction="russian" style="border-color: #ff7f00; color: #ff7f00;">
-                                <i class="fa fa-book mr-2"></i>俄国文学谱系
+                                <i class="fa fa-book mr-2"></i>俄国思想谱系
                             </a>
                         </li>
                         <li>
