@@ -127,6 +127,36 @@
             border-color: currentColor;
             box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
         }
+        
+        /* 移动端横向快速定位指示器样式 */
+        .scroll-indicator-item-mobile {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+            height: 24px;
+            padding: 0 8px;
+            border-radius: 999px;
+            color: white;
+            font-weight: 500;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+            border: 2px solid transparent;
+        }
+        
+        .scroll-indicator-item-mobile:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .scroll-indicator-item-mobile.active {
+            opacity: 1;
+            transform: scale(1.05);
+            border-color: white;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
@@ -138,26 +168,44 @@
         </div>
     </header>
 
-    <!-- 移动端派系导航（下拉选择） -->
-    <div class="lg:hidden bg-white border-b border-gray-200 sticky top-16 z-40">
-        <div class="container mx-auto px-4 py-2">
-            <select id="mobile-faction-select" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-                <option value="all">全部派系</option>
-                <option value="nietzsche">尼采及核心继承者</option>
-                <option value="existential">存在主义谱系</option>
-                <option value="pioneer">先驱与同路人</option>
-                <option value="christian">基督教谱系</option>
-                <option value="rationalist">理性主义谱系</option>
-                <option value="linguistics">语言学谱系</option>
-                <option value="psychology">深度心理学谱系</option>
-                <option value="russian">俄国文学谱系</option>
-                <option value="sympathy">同情与现实的捍卫者</option>
-            </select>
+    <!-- 移动端横向快速定位指示器 -->
+    <div class="lg:hidden bg-white border-b border-gray-200 sticky top-16 z-40 overflow-x-auto">
+        <div class="container mx-auto px-4 py-2 flex space-x-3 whitespace-nowrap">
+            <div class="scroll-indicator-item-mobile active" data-target="all" style="background-color: #666;">
+                <span class="text-xs">全部</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="nietzsche" style="background-color: #e41a1c;">
+                <span class="text-xs">尼采</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="existential" style="background-color: #4B0082;">
+                <span class="text-xs">存在主义</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="pioneer" style="background-color: #377eb8;">
+                <span class="text-xs">先驱</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="christian" style="background-color: #4daf4a;">
+                <span class="text-xs">基督教</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="rationalist" style="background-color: #984ea3;">
+                <span class="text-xs">理性主义</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="linguistics" style="background-color: #9370DB;">
+                <span class="text-xs">语言学</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="psychology" style="background-color: #1E90FF;">
+                <span class="text-xs">心理学</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="russian" style="background-color: #ff7f00;">
+                <span class="text-xs">俄国文学</span>
+            </div>
+            <div class="scroll-indicator-item-mobile" data-target="sympathy" style="background-color: #a65628;">
+                <span class="text-xs">同情捍卫</span>
+            </div>
         </div>
     </div>
 
     <!-- 快速定位指示器（桌面端） -->
-    <div class="scroll-indicator" id="scrollIndicator">
+    <div class="scroll-indicator hidden lg:block" id="scrollIndicator">
             <div class="scroll-indicator-item active" data-target="nietzsche" style="background-color: #e41a1c;"></div>
             <div class="scroll-indicator-item" data-target="existential" style="background-color: #4B0082;"></div>
             <div class="scroll-indicator-item" data-target="pioneer" style="background-color: #377eb8;"></div>
@@ -2103,25 +2151,8 @@
             });
         });
 
-        // 2. 移动端下拉选择筛选
-        document.getElementById('mobile-faction-select').addEventListener('change', function() {
-            const faction = this.value;
-            filterThinkers(faction);
-            // 同步桌面端导航激活状态
-            navItems.forEach(item => {
-                if (item.getAttribute('data-faction') === faction) {
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    item.classList.add('active');
-                }
-            });
-            // 滚动到对应派系区域（非"全部"时）
-            if (faction !== 'all') {
-                document.getElementById(faction).scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else {
-                // "全部"时滚动到顶部
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
+        // 2. 移动端筛选功能已通过横向快速定位指示器实现
+        // （删除了原有的下拉选择筛选）
 
         // 3. 派系筛选核心函数
         function filterThinkers(faction) {
@@ -2140,6 +2171,7 @@
         // 4. 滚动指示器功能
         const sections = document.querySelectorAll('section[id]');
         const scrollIndicators = document.querySelectorAll('.scroll-indicator-item');
+        const mobileScrollIndicators = document.querySelectorAll('.scroll-indicator-item-mobile');
         
         function highlightScrollIndicator() {
             let scrollPosition = window.scrollY + 200;
@@ -2150,7 +2182,16 @@
                 const sectionId = section.getAttribute('id');
                 
                 if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    // 更新桌面端指示器
                     scrollIndicators.forEach(indicator => {
+                        indicator.classList.remove('active');
+                        if (indicator.getAttribute('data-target') === sectionId) {
+                            indicator.classList.add('active');
+                        }
+                    });
+                    
+                    // 更新移动端指示器
+                    mobileScrollIndicators.forEach(indicator => {
                         indicator.classList.remove('active');
                         if (indicator.getAttribute('data-target') === sectionId) {
                             indicator.classList.add('active');
@@ -2160,7 +2201,7 @@
             });
         }
         
-        // 点击滚动指示器跳转到对应区域
+        // 点击桌面端滚动指示器跳转到对应区域
         scrollIndicators.forEach(indicator => {
             indicator.addEventListener('click', () => {
                 const targetId = indicator.getAttribute('data-target');
@@ -2171,9 +2212,41 @@
                     item.classList.remove('active');
                     if (item.getAttribute('data-faction') === targetId) {
                         item.classList.add('active');
-                        document.getElementById('mobile-faction-select').value = targetId;
                     }
                 });
+            });
+        });
+        
+        // 点击移动端滚动指示器跳转到对应区域
+        mobileScrollIndicators.forEach(indicator => {
+            indicator.addEventListener('click', () => {
+                const targetId = indicator.getAttribute('data-target');
+                
+                if (targetId === 'all') {
+                    // 全部派系时滚动到顶部
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    // 更新导航状态为全部派系
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('data-faction') === 'all') {
+                            item.classList.add('active');
+                        }
+                    });
+                    // 显示所有思想家卡片
+                    filterThinkers('all');
+                } else {
+                    // 其他派系时滚动到对应区域
+                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // 更新导航状态
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('data-faction') === targetId) {
+                            item.classList.add('active');
+                        }
+                    });
+                    // 筛选思想家卡片
+                    filterThinkers(targetId);
+                }
             });
         });
         
@@ -2186,6 +2259,13 @@
             highlightScrollIndicator();
             // 初始加载时更新思想家计数
             updateThinkerCount();
+            
+            // 为"全部"指示器添加active类
+            mobileScrollIndicators.forEach(indicator => {
+                if (indicator.getAttribute('data-target') === 'all') {
+                    indicator.classList.add('active');
+                }
+            });
         });
 
         // 6. 更新思想家数量统计
