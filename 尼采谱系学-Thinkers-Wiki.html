@@ -2133,24 +2133,37 @@
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
             item.addEventListener('click', function(e) {
+                // 阻止默认跳转行为
+                e.preventDefault();
+                e.stopPropagation();
+                
                 // 移除所有激活状态
                 navItems.forEach(nav => nav.classList.remove('active'));
                 // 添加当前激活状态
                 this.classList.add('active');
-                // 阻止默认跳转
-                e.preventDefault();
+                
                 // 触发派系筛选
                 const faction = this.getAttribute('data-faction');
                 filterThinkers(faction);
+                
                 // 移动端选择同步
-                document.getElementById('mobile-faction-select').value = faction;
-                // 滚动到对应派系区域（非"全部"时）
-                if (faction !== 'all') {
-                    document.getElementById(faction).scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    // "全部"时滚动到顶部
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                const mobileSelect = document.getElementById('mobile-faction-select');
+                if (mobileSelect) {
+                    mobileSelect.value = faction;
                 }
+                
+                // 滚动到对应派系区域（非"全部"时）
+                setTimeout(() => {
+                    if (faction !== 'all') {
+                        const targetElement = document.getElementById(faction);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    } else {
+                        // "全部"时滚动到顶部
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }, 100);
             });
         });
 
